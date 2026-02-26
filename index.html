@@ -2630,7 +2630,7 @@ function szukajPorcji(text, produktKlucz) {
 function obliczSkladniki(produkty) {
   /* Sumuje wszystkie składniki z wykrytych produktów */
   let total = {
-    Fe: 0, B12: 0, Ca: 0, Zn: 0, proteina: 0, folian: 0, omega3: 0, vitC: 0,
+    Fe: 0, B12: 0, Ca: 0, Zn: 0, proteina: 0, folian: 0, omega3: 0, vitC: 0, witD: 0,
     maPijakaweFlagę: false, maVitCBogatą: false,
     maKawe: false, maHerbate: false, maSzpinak: false, maSoja: false,
     produktyLista: [],
@@ -2869,6 +2869,13 @@ function renderNutrients(w) {
 
   const skladniki = [
     {
+      key: 'witD', icon: '☀️', name: 'Wit. D3',
+      val: w.witD || 0, norm: NORMY.witD, unit: 'IU',
+      desc: (v, n) => v === 0 ? 'Polska jesień/zima — dieta nie pokryje wit. D. Suplementacja 800–2000 IU/dzień jest wskazana.' :
+        v < n ? `Masz ${v} IU — to mniej niż zalecane ${n} IU/dzień. Rozważ zwiększenie dawki.` :
+          `Suplementujesz ${v} IU — dobra dawka.`
+    },
+    {
       key: 'B12', icon: '🔬', name: 'Witamina B12',
       val: w.B12, norm: NORMY.B12, unit: 'µg',
       desc: (v, n) => v < 1 ? 'B12 jest krytyczna dla układu nerwowego. Dieta roślinna jej nie pokrywa.' :
@@ -2913,6 +2920,8 @@ function renderNutrients(w) {
   ];
 
   const primaryKeys = ['B12', 'Ca', 'Zn', 'folian', 'proteina', 'omega3'];
+  // Jeśli wzięto suplement D3 — pokaż witD w głównej sekcji
+  if (w.witD && w.witD > 0) primaryKeys.unshift('witD');
   const moreKeys = ['witD', 'jod', 'magnez'];
 
   primaryKeys.forEach((key, i) => {
@@ -2927,8 +2936,9 @@ function renderNutrients(w) {
   // More nutrients (dodatkowe)
   if (showMore) {
     const moreData = [
-      { key: 'witD', icon: '☀️', name: 'Wit. D', val: 0, norm: NORMY.witD, unit: 'IU',
-        desc: () => 'Polska jesień/zima — dieta nie pokryje wit. D. Suplementacja 800-2000 IU/dzień jest wskazana.' },
+      { key: 'witD', icon: '☀️', name: 'Wit. D3', val: w.witD || 0, norm: NORMY.witD, unit: 'IU',
+        desc: (v, n) => v === 0 ? 'Polska jesień/zima — dieta nie pokryje wit. D. Suplementacja 800–2000 IU/dzień jest wskazana.' :
+          v < n ? `Masz ${v} IU — to mniej niż zalecane ${n} IU/dzień.` : `Suplementujesz ${v} IU — dobra dawka.` },
       { key: 'jod', icon: '🌊', name: 'Jod', val: 0, norm: 150, unit: 'µg',
         desc: () => 'Weganie są narażeni na niedobór jodu. Rozważ suplementację lub jodowaną sól.' },
       { key: 'magnez', icon: '⚡', name: 'Magnez', val: Math.round(w.Ca * 0.4), norm: 310, unit: 'mg',
