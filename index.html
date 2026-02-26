@@ -1,0 +1,3489 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Skład · Tracker składników odżywczych dla wegetarian i wegan</title>
+<meta name="description" content="Bezpłatna aplikacja edukacyjna do śledzenia składników odżywczych w diecie wegetariańskiej i wegańskiej. Sprawdź ile masz żelaza, B12, wapnia, cynku i omega-3. Bez rejestracji, bez reklam.">
+<meta name="keywords" content="tracker składników odżywczych, dieta wegetariańska, dieta wegańska, niedobór żelaza wegetarianie, witamina B12 weganizm, wapń dieta roślinna, cynk wegetarianie, omega-3 algi, biodostępność żelaza, suplementy wegetarianie, co jeść wegetarianka, niedobory diety roślinnej, kalkulator odżywczy wegetarianie, żelazo niehemowe, OpenFoodFacts Polska">
+<meta name="author" content="Skład Tracker">
+<meta name="robots" content="index, follow">
+<meta name="language" content="pl">
+
+<!-- Open Graph / Facebook / LinkedIn -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Skład · Tracker składników odżywczych dla wegetarian i wegan">
+<meta property="og:description" content="Wpisz co dziś zjadłaś — powiem Ci czego brakuje. Żelazo, B12, wapń, cynk, omega-3. Bezpłatnie, bez rejestracji, bez reklam.">
+<meta property="og:locale" content="pl_PL">
+<meta property="og:site_name" content="Skład Tracker">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Skład · Tracker składników odżywczych dla wegetarian i wegan">
+<meta name="twitter:description" content="Wpisz co dziś zjadłaś — powiem Ci czego brakuje. Żelazo, B12, wapń, cynk, omega-3. Bezpłatnie, bez rejestracji, bez reklam.">
+
+<!-- Canonical -->
+<meta name="canonical" content="">
+
+<!-- PWA / Mobile -->
+<meta name="theme-color" content="#1A1A16">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Skład Tracker">
+<meta name="mobile-web-app-capable" content="yes">
+
+<!-- Structured Data — WebApplication -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Skład · Tracker składników odżywczych",
+  "description": "Edukacyjna aplikacja do śledzenia składników odżywczych w diecie wegetariańskiej i wegańskiej. Analizuje żelazo, witaminę B12, wapń, cynk, omega-3 i inne mikroelementy. Uwzględnia biodostępność i interakcje z kawą oraz witaminą C.",
+  "url": "",
+  "applicationCategory": "HealthApplication",
+  "operatingSystem": "All",
+  "browserRequirements": "Requires JavaScript",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "PLN"
+  },
+  "inLanguage": "pl",
+  "keywords": "wegetarianie, weganie, składniki odżywcze, żelazo, B12, wapń, cynk, omega-3, suplementy, dieta roślinna",
+  "featureList": [
+    "Analiza składników odżywczych z tekstu naturalnego",
+    "Baza ponad 80 produktów wegetariańskich",
+    "Integracja z OpenFoodFacts — miliony produktów",
+    "Kalkulator biodostępności żelaza",
+    "Śledzenie suplementów z własną dawką",
+    "Filtrowanie według alergii i nietolerancji",
+    "Działa offline, bez rejestracji, bez cookies"
+  ]
+}
+</script>
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>">
+<style>
+  /* ============================================
+     DESIGN SYSTEM — WARM DARK BOTANICAL
+  ============================================ */
+  :root {
+    --bg: #0D0D0B;
+    --s1: #161614;
+    --s2: #1E1E1B;
+    --border: #2C2C28;
+    --text: #F0EDE6;
+    --text2: #7A7870;
+    --gold: #C8A96E;
+    --green: #7CB987;
+    --red: #C4614A;
+    --yellow: #D4A843;
+    --sep: #242420;
+    --r16: 16px;
+    --r10: 10px;
+    --rpill: 100px;
+    --shadow: 0 4px 24px rgba(0,0,0,0.35);
+    --trans: 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { background: var(--bg); }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.65;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  #app {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 16px;
+    min-height: 100vh;
+  }
+
+  /* TYPOGRAPHY */
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text2);
+  }
+
+  h1 {
+    font-size: clamp(28px, 5vw, 42px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+
+  h2 {
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .big-num {
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+
+  .micro {
+    font-size: 12px;
+    color: var(--text2);
+    line-height: 1.5;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--s1);
+    border: 1px solid var(--border);
+    border-radius: var(--r16);
+    padding: 24px;
+    box-shadow: var(--shadow);
+    transition: var(--trans);
+  }
+
+  .card-s2 {
+    background: var(--s2);
+    border: 1px solid var(--border);
+    border-radius: var(--r16);
+    padding: 20px;
+  }
+
+  /* BUTTONS */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: var(--rpill);
+    border: none;
+    cursor: pointer;
+    font-family: var(--font);
+    font-size: 15px;
+    font-weight: 500;
+    transition: var(--trans);
+    min-height: 44px;
+    min-width: 44px;
+    text-decoration: none;
+  }
+
+  .btn-primary {
+    background: var(--gold);
+    color: #0D0D0B;
+    font-weight: 600;
+  }
+
+  .btn-primary:hover {
+    background: #d4b87a;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(200,169,110,0.3);
+  }
+
+  .btn-ghost {
+    background: var(--s2);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+
+  .btn-ghost:hover {
+    background: var(--border);
+    border-color: var(--text2);
+  }
+
+  .btn-ghost.active {
+    background: var(--gold);
+    color: #0D0D0B;
+    border-color: var(--gold);
+    font-weight: 600;
+  }
+
+  .btn:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+  }
+
+  /* INPUT */
+  input, textarea, select {
+    background: var(--s2);
+    border: 1px solid var(--border);
+    border-radius: var(--r10);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 15px;
+    padding: 12px 16px;
+    width: 100%;
+    transition: var(--trans);
+    outline: none;
+    resize: none;
+  }
+
+  input:focus, textarea:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 2px rgba(200,169,110,0.15);
+  }
+
+  textarea::placeholder, input::placeholder {
+    color: var(--text2);
+  }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    background: var(--sep);
+    border-radius: 100px;
+    height: 8px;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .progress-bar {
+    height: 100%;
+    border-radius: 100px;
+    transition: width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  /* PILLS */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--s2);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 6px 14px;
+    font-size: 13px;
+    color: var(--text);
+  }
+
+  .pill-remove {
+    cursor: pointer;
+    color: var(--text2);
+    line-height: 1;
+    transition: var(--trans);
+    border: none;
+    background: none;
+    padding: 0;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    color: var(--text2);
+  }
+
+  .pill-remove:hover { color: var(--red); }
+
+  /* SEPARATOR */
+  hr {
+    border: none;
+    border-top: 1px solid var(--sep);
+    margin: 24px 0;
+  }
+
+  /* STATUS COLORS */
+  .status-ok { color: var(--green); }
+  .status-warn { color: var(--yellow); }
+  .status-bad { color: var(--red); }
+
+  /* GRID */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  @media (max-width: 480px) {
+    .grid-2 { grid-template-columns: 1fr; }
+  }
+
+  /* SPACING */
+  .mt8 { margin-top: 8px; }
+  .mt16 { margin-top: 16px; }
+  .mt24 { margin-top: 24px; }
+  .mt32 { margin-top: 32px; }
+  .mt48 { margin-top: 48px; }
+  .mb8 { margin-bottom: 8px; }
+  .mb16 { margin-bottom: 16px; }
+  .mb24 { margin-bottom: 24px; }
+  .gap8 { gap: 8px; }
+  .gap12 { gap: 12px; }
+  .gap16 { gap: 16px; }
+
+  .flex { display: flex; }
+  .flex-col { display: flex; flex-direction: column; }
+  .flex-wrap { flex-wrap: wrap; }
+  .align-center { align-items: center; }
+  .justify-between { justify-content: space-between; }
+  .space-between { justify-content: space-between; align-items: center; }
+
+  /* SCREENS */
+  .screen { display: none; padding: 32px 0 80px; }
+  .screen.active { display: block; }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    background: var(--s1);
+    border: 1px solid var(--border);
+    border-radius: var(--rpill);
+    padding: 4px;
+    gap: 4px;
+  }
+
+  .tab {
+    flex: 1;
+    padding: 8px 16px;
+    border-radius: 100px;
+    border: none;
+    background: transparent;
+    color: var(--text2);
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--trans);
+    min-height: 36px;
+  }
+
+  .tab.active {
+    background: var(--s2);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+
+  /* LOADING */
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  .loading-bar {
+    height: 4px;
+    background: linear-gradient(90deg, var(--sep) 25%, var(--gold) 50%, var(--sep) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.2s infinite;
+    border-radius: 100px;
+  }
+
+  /* ONBOARDING */
+  #screen-onboarding {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 48px 0;
+  }
+
+  .tile-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .tile {
+    padding: 12px 20px;
+    border-radius: var(--r10);
+    border: 1.5px solid var(--border);
+    background: var(--s1);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--trans);
+    min-height: 44px;
+  }
+
+  .tile:hover {
+    border-color: var(--gold);
+    background: var(--s2);
+  }
+
+  .tile.selected {
+    border-color: var(--gold);
+    background: rgba(200,169,110,0.12);
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  /* SYNERGIE */
+  .synergy-item {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--sep);
+  }
+
+  .synergy-item:last-child { border-bottom: none; }
+
+  /* CHART */
+  .chart-bar-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 8px 0;
+  }
+
+  .chart-label {
+    font-size: 12px;
+    color: var(--text2);
+    width: 80px;
+    flex-shrink: 0;
+  }
+
+  .chart-bar-outer {
+    flex: 1;
+    background: var(--sep);
+    border-radius: 4px;
+    height: 20px;
+    position: relative;
+    overflow: visible;
+  }
+
+  .chart-bar-inner {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    min-width: 4px;
+    max-width: 100%;
+  }
+
+  .chart-norm-line {
+    position: absolute;
+    top: -4px;
+    bottom: -4px;
+    width: 2px;
+    background: var(--gold);
+    border-radius: 2px;
+  }
+
+  .chart-val {
+    font-size: 12px;
+    color: var(--text2);
+    width: 50px;
+    flex-shrink: 0;
+    text-align: right;
+  }
+
+  /* DISCLAIMER */
+  .disclaimer {
+    margin-top: 48px;
+    padding: 16px 20px;
+    border-radius: var(--r10);
+    background: var(--s1);
+    border: 1px solid var(--sep);
+  }
+
+  /* SCROLL */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* ANIMATE IN */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-up {
+    animation: fadeUp 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  }
+
+  .fade-up-1 { animation-delay: 0.05s; }
+  .fade-up-2 { animation-delay: 0.1s; }
+  .fade-up-3 { animation-delay: 0.15s; }
+  .fade-up-4 { animation-delay: 0.2s; }
+  .fade-up-5 { animation-delay: 0.25s; }
+
+  /* NAV BOTTOM */
+  .nav-bottom {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 720px;
+    background: rgba(13,13,11,0.9);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid var(--border);
+    padding: 8px 16px 12px;
+    z-index: 100;
+    display: none;
+  }
+
+  .nav-bottom.visible { display: block; }
+
+  .nav-tabs {
+    display: flex;
+    gap: 4px;
+  }
+
+  .nav-tab {
+    flex: 1;
+    padding: 10px 8px;
+    border-radius: 12px;
+    border: none;
+    background: transparent;
+    color: var(--text2);
+    font-family: var(--font);
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--trans);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    min-height: 48px;
+  }
+
+  .nav-tab .icon { font-size: 18px; }
+
+  .nav-tab.active {
+    color: var(--gold);
+    background: rgba(200,169,110,0.08);
+  }
+
+  .nav-tab:hover { color: var(--text); }
+
+  /* MEAL ADD SECTION */
+  .meal-section {
+    display: none;
+    margin-top: 12px;
+    padding: 16px;
+    background: var(--s2);
+    border: 1px solid var(--border);
+    border-radius: var(--r16);
+  }
+
+  .meal-section.open { display: block; }
+
+  /* BIODOSTEPNOSC QUIZ */
+  .bio-question {
+    display: none;
+    margin-top: 16px;
+    padding: 20px;
+    background: var(--s2);
+    border: 1px solid var(--border);
+    border-radius: var(--r16);
+    animation: fadeUp 0.3s ease both;
+  }
+
+  .bio-question.show { display: block; }
+
+  .bio-btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .bio-btn {
+    padding: 10px 18px;
+    border-radius: var(--rpill);
+    border: 1.5px solid var(--border);
+    background: var(--s1);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 14px;
+    cursor: pointer;
+    transition: var(--trans);
+    min-height: 44px;
+  }
+
+  .bio-btn:hover { border-color: var(--gold); background: var(--s2); }
+  .bio-btn.selected { border-color: var(--gold); background: rgba(200,169,110,0.15); color: var(--gold); }
+
+  /* BIO RESULT */
+  .bio-result {
+    display: none;
+    margin-top: 16px;
+    padding: 16px 20px;
+    border-radius: var(--r10);
+    border-left: 3px solid;
+  }
+
+  .bio-result.show { display: block; }
+  .bio-result.good { background: rgba(124,185,135,0.1); border-color: var(--green); }
+  .bio-result.warn { background: rgba(212,168,67,0.1); border-color: var(--yellow); }
+  .bio-result.bad { background: rgba(196,97,74,0.1); border-color: var(--red); }
+
+  /* WARNING B12 */
+  .warning-b12 {
+    background: rgba(212,168,67,0.08);
+    border: 1px solid rgba(212,168,67,0.3);
+    border-radius: var(--r10);
+    padding: 16px 20px;
+    margin-top: 16px;
+  }
+
+  /* TREND SECTION */
+  .trend-skeleton {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px;
+    text-align: center;
+    color: var(--text2);
+  }
+
+  /* INPUT ROW */
+  .input-row {
+    position: relative;
+  }
+
+  .input-send {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    width: 40px;
+    height: 40px;
+    border-radius: 100px;
+    background: var(--gold);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: #0D0D0B;
+    transition: var(--trans);
+    flex-shrink: 0;
+  }
+
+  .input-send:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 16px rgba(200,169,110,0.4);
+  }
+
+  .big-textarea {
+    min-height: 130px;
+    padding-bottom: 14px;
+    line-height: 1.65;
+  }
+
+  /* EMPTY STATE */
+  .empty-state {
+    text-align: center;
+    padding: 64px 24px;
+    color: var(--text2);
+  }
+
+  .empty-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  /* INGREDIENT CARD */
+  .ingr-card {
+    background: var(--s1);
+    border: 1px solid var(--border);
+    border-radius: var(--r16);
+    padding: 18px 20px;
+  }
+
+  .ingr-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .ingr-icon { font-size: 20px; }
+  .ingr-name { font-size: 14px; font-weight: 600; }
+
+  .ingr-numbers {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+
+  .ingr-val { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; }
+  .ingr-unit { font-size: 13px; color: var(--text2); }
+  .ingr-norm { font-size: 12px; color: var(--text2); }
+
+  .ingr-desc {
+    font-size: 12px;
+    color: var(--text2);
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--sep);
+  }
+
+  /* RECO CARD */
+  .reco-card {
+    background: var(--s1);
+    border: 1px solid var(--border);
+    border-radius: var(--r16);
+    padding: 20px;
+    margin-bottom: 12px;
+  }
+
+  .reco-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .reco-tip {
+    font-size: 13px;
+    color: var(--text2);
+    padding: 8px 12px;
+    background: var(--s2);
+    border-radius: 8px;
+    margin-top: 8px;
+    border-left: 2px solid var(--gold);
+  }
+
+  /* MORE BTN */
+  .more-btn {
+    background: none;
+    border: 1px dashed var(--border);
+    border-radius: var(--r10);
+    color: var(--text2);
+    font-family: var(--font);
+    font-size: 13px;
+    cursor: pointer;
+    padding: 12px;
+    width: 100%;
+    transition: var(--trans);
+    margin-top: 12px;
+  }
+
+  .more-btn:hover { border-color: var(--gold); color: var(--text); }
+
+  /* ONBOARDING STEP */
+  .ob-step {
+    display: none;
+  }
+
+  .ob-step.active { display: block; }
+
+  /* LOGO/BRAND */
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 48px;
+  }
+
+  .brand-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 100%;
+    background: var(--gold);
+  }
+
+  /* SCROLL TO TOP on results */
+  .results-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  /* ALERGIE CHECKBOXES */
+  .allergy-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  @media (max-width: 400px) {
+    .allergy-grid { grid-template-columns: 1fr; }
+  }
+
+  .allergy-check {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--s1);
+    border: 1.5px solid var(--border);
+    border-radius: var(--r10);
+    cursor: pointer;
+    transition: var(--trans);
+    min-height: 44px;
+    user-select: none;
+  }
+
+  .allergy-check:hover {
+    border-color: var(--gold);
+    background: var(--s2);
+  }
+
+  .allergy-check.checked {
+    border-color: var(--red);
+    background: rgba(196,97,74,0.08);
+  }
+
+  .allergy-check input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    accent-color: var(--red);
+    cursor: pointer;
+    border-radius: 4px;
+  }
+
+  .allergy-check span {
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+
+  .allergy-check .allergy-icon {
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  /* ALLERGY WARNING BADGE */
+  .allergy-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(196,97,74,0.12);
+    border: 1px solid rgba(196,97,74,0.35);
+    border-radius: 100px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--red);
+    letter-spacing: 0.02em;
+  }
+
+  /* SUPLEMENT SECTION */
+  .supp-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  @media (max-width: 400px) {
+    .supp-grid { grid-template-columns: 1fr; }
+  }
+
+  .supp-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    background: var(--s1);
+    border: 1.5px solid var(--border);
+    border-radius: var(--r10);
+    cursor: pointer;
+    transition: var(--trans);
+    min-height: 52px;
+    user-select: none;
+  }
+
+  .supp-item:hover { border-color: var(--gold); background: var(--s2); }
+
+  .supp-item.checked {
+    border-color: var(--green);
+    background: rgba(124,185,135,0.08);
+  }
+
+  .supp-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    accent-color: var(--green);
+    cursor: pointer;
+  }
+
+  .supp-item-info { flex: 1; }
+
+  .supp-item-name {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .supp-item-dose {
+    font-size: 11px;
+    color: var(--text2);
+    margin-top: 2px;
+  }
+
+  .supp-icon { font-size: 18px; flex-shrink: 0; }
+
+  /* SUPP ROW — nowy design z edytowalną dawką */
+  .supp-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .supp-row {
+    background: var(--s1);
+    border: 1.5px solid var(--border);
+    border-radius: var(--r10);
+    overflow: hidden;
+    transition: var(--trans);
+  }
+
+  .supp-row.checked {
+    border-color: var(--green);
+    background: rgba(124,185,135,0.06);
+  }
+
+  .supp-row-main {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    cursor: pointer;
+    user-select: none;
+    min-height: 52px;
+  }
+
+  .supp-row-main:hover { background: rgba(255,255,255,0.02); }
+
+  .supp-row-check {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    border-radius: 6px;
+    border: 2px solid var(--border);
+    background: var(--s2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--trans);
+    font-size: 12px;
+  }
+
+  .supp-row.checked .supp-row-check {
+    background: var(--green);
+    border-color: var(--green);
+    color: #0D0D0B;
+  }
+
+  .supp-row-detail {
+    display: none;
+    padding: 0 16px 14px 16px;
+    border-top: 1px solid var(--sep);
+    margin-top: 0;
+  }
+
+  .supp-row.checked .supp-row-detail { display: block; }
+
+  .supp-dose-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .supp-dose-input {
+    width: 90px;
+    min-width: 90px;
+    padding: 7px 10px;
+    font-size: 15px;
+    font-weight: 600;
+    text-align: center;
+    border-radius: 8px;
+    border: 1.5px solid var(--green);
+    background: rgba(124,185,135,0.08);
+    color: var(--green);
+  }
+
+  .supp-dose-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(124,185,135,0.2);
+  }
+
+  /* Remove number spinners */
+  .supp-dose-input::-webkit-inner-spin-button,
+  .supp-dose-input::-webkit-outer-spin-button { -webkit-appearance: none; }
+  .supp-dose-input[type=number] { -moz-appearance: textfield; }
+
+  /* SUPP PILL in meals list */
+  .pill-supp {
+    background: rgba(124,185,135,0.1);
+    border-color: rgba(124,185,135,0.3);
+    color: var(--green);
+  }
+
+</style>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ===================== SCREEN: ONBOARDING ===================== -->
+  <div id="screen-onboarding" class="screen">
+    <div class="brand">
+      <div class="brand-dot"></div>
+      <span class="eyebrow">Skład · Wegetariański Tracker</span>
+    </div>
+
+    <h1 class="mb24">Czy Twoja dieta<br>naprawdę Ci służy?</h1>
+
+    <p style="color:var(--text2); font-size:16px; margin-bottom: 28px; max-width: 480px;">
+      Wpisz co zjadłaś dziś — na oko, po ludzku. Powiem Ci czego brakuje i jak to naprawić.
+    </p>
+
+    <div style="padding:14px 16px; background:rgba(196,97,74,0.07); border:1px solid rgba(196,97,74,0.2); border-radius:10px; margin-bottom:32px; max-width:480px;">
+      <p style="font-size:12px; color:var(--text2); line-height:1.65;">
+        ⚕️ <strong style="color:var(--text);">To narzędzie edukacyjne, nie porada medyczna.</strong> Wyniki są szacunkowe i nie zastępują konsultacji z lekarzem ani dietetykiem. Jeśli masz niedobory lub choroby przewlekłe — skonsultuj dietę ze specjalistą.<br>
+        <span style="margin-top:6px; display:block;">🌐 Dane odżywcze pochodzą z własnej bazy oraz <a href="https://world.openfoodfacts.org" target="_blank" style="color:var(--gold); text-decoration:none;">OpenFoodFacts</a> — otwartej bazy produktów tworzonej przez społeczność.</span>
+      </p>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="ob-step active" id="ob-step-1">
+      <div class="eyebrow mb8">Krok 1 z 4</div>
+      <p style="font-size:17px; font-weight:600; margin-bottom:16px;">Płeć biologiczna</p>
+      <p class="micro mb16">Pytamy o to bo normy żelaza różnią się znacznie w zależności od płci</p>
+
+      <div class="tile-group">
+        <button class="tile" data-val="kobieta" onclick="selectTile(this, 'plec')">Kobieta</button>
+        <button class="tile" data-val="mezczyzna" onclick="selectTile(this, 'plec')">Mężczyzna</button>
+        <button class="tile" data-val="inne" onclick="selectTile(this, 'plec')">Wolę nie podawać</button>
+      </div>
+
+      <div class="mt32">
+        <button class="btn btn-primary" onclick="obNext(2)">Dalej →</button>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="ob-step" id="ob-step-2">
+      <div class="eyebrow mb8">Krok 2 z 4</div>
+      <p style="font-size:17px; font-weight:600; margin-bottom:16px;">Czy masz miesiączkę?</p>
+      <p class="micro mb16">Kobiety menstruujące potrzebują prawie 2× więcej żelaza (18 mg vs 10 mg)</p>
+
+      <div class="tile-group">
+        <button class="tile" data-val="tak" onclick="selectTile(this, 'miesiaczka')">Tak, regularnie</button>
+        <button class="tile" data-val="nie" onclick="selectTile(this, 'miesiaczka')">Nie / po menopauzie</button>
+      </div>
+
+      <div class="mt32 flex gap8 flex-wrap">
+        <button class="btn btn-ghost" onclick="obNext(1)">← Wróć</button>
+        <button class="btn btn-primary" onclick="obNext(3)">Dalej →</button>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="ob-step" id="ob-step-3">
+      <div class="eyebrow mb8">Krok 3 z 4</div>
+      <p style="font-size:17px; font-weight:600; margin-bottom:16px;">Typ diety</p>
+
+      <div class="tile-group" style="flex-direction:column;">
+        <button class="tile" data-val="wegetarianin" onclick="selectTile(this, 'dieta')" style="text-align:left;">
+          <div style="font-weight:600;">Wegetarianka/in</div>
+          <div class="micro">Je jajka i/lub nabiał</div>
+        </button>
+        <button class="tile" data-val="weganin" onclick="selectTile(this, 'dieta')" style="text-align:left;">
+          <div style="font-weight:600;">Weganka/in</div>
+          <div class="micro">Zero produktów zwierzęcych</div>
+        </button>
+        <button class="tile" data-val="fleksi" onclick="selectTile(this, 'dieta')" style="text-align:left;">
+          <div style="font-weight:600;">Fleksitarianka/in</div>
+          <div class="micro">Głównie roślinnie, czasem ryba/mięso</div>
+        </button>
+      </div>
+
+      <div class="mt32 flex gap8 flex-wrap">
+        <button class="btn btn-ghost" onclick="obNext(2)">← Wróć</button>
+        <button class="btn btn-primary" onclick="obNext(4)">Dalej →</button>
+      </div>
+    </div>
+
+    <!-- Step 4 — ALERGIE -->
+    <div class="ob-step" id="ob-step-4">
+      <div class="eyebrow mb8">Krok 4 z 4</div>
+      <p style="font-size:17px; font-weight:600; margin-bottom:8px;">Alergie i nietolerancje</p>
+      <p class="micro mb16">Zaznacz czego unikasz — nie będę Ci tego polecać w rekomendacjach</p>
+
+      <div class="allergy-grid" id="allergy-grid">
+        <label class="allergy-check">
+          <input type="checkbox" value="orzechy" onchange="this.closest('.allergy-check').classList.toggle('checked', this.checked)">
+          <span class="allergy-icon">🥜</span>
+          <span>Orzechy<br><span style="color:var(--text2);font-size:11px;">migdały, nerkowce, włoskie</span></span>
+        </label>
+        <label class="allergy-check">
+          <input type="checkbox" value="orzeszki" onchange="this.closest('.allergy-check').classList.toggle('checked', this.checked)">
+          <span class="allergy-icon">🥜</span>
+          <span>Orzeszki ziemne</span>
+        </label>
+        <label class="allergy-check">
+          <input type="checkbox" value="gluten" onchange="this.closest('.allergy-check').classList.toggle('checked', this.checked)">
+          <span class="allergy-icon">🌾</span>
+          <span>Gluten / pszenica</span>
+        </label>
+        <label class="allergy-check">
+          <input type="checkbox" value="laktoza" onchange="this.closest('.allergy-check').classList.toggle('checked', this.checked)">
+          <span class="allergy-icon">🥛</span>
+          <span>Laktoza / nabiał</span>
+        </label>
+        <label class="allergy-check">
+          <input type="checkbox" value="jajka" onchange="this.closest('.allergy-check').classList.toggle('checked', this.checked)">
+          <span class="allergy-icon">🥚</span>
+          <span>Jajka</span>
+        </label>
+        <label class="allergy-check">
+          <input type="checkbox" value="soja" onchange="this.closest('.allergy-check').classList.toggle('checked', this.checked)">
+          <span class="allergy-icon">🫘</span>
+          <span>Soja i przetwory</span>
+        </label>
+        <label class="allergy-check">
+          <input type="checkbox" value="sezam" onchange="this.closest('.allergy-check').classList.toggle('checked', this.checked)">
+          <span class="allergy-icon">🌰</span>
+          <span>Sezam / tahini</span>
+        </label>
+        <label class="allergy-check">
+          <input type="checkbox" value="cytrusy" onchange="this.closest('.allergy-check').classList.toggle('checked', this.checked)">
+          <span class="allergy-icon">🍋</span>
+          <span>Cytrusy<br><span style="color:var(--text2);font-size:11px;">cytryna, pomarańcza</span></span>
+        </label>
+        <label class="allergy-check">
+          <input type="checkbox" value="jagodowe" onchange="this.closest('.allergy-check').classList.toggle('checked', this.checked)">
+          <span class="allergy-icon">🍓</span>
+          <span>Owoce jagodowe<br><span style="color:var(--text2);font-size:11px;">truskawki, maliny</span></span>
+        </label>
+        <label class="allergy-check">
+          <input type="checkbox" value="kokos" onchange="this.closest('.allergy-check').classList.toggle('checked', this.checked)">
+          <span class="allergy-icon">🥥</span>
+          <span>Kokos</span>
+        </label>
+        <label class="allergy-check">
+          <input type="checkbox" value="nasiona" onchange="this.closest('.allergy-check').classList.toggle('checked', this.checked)">
+          <span class="allergy-icon">🌱</span>
+          <span>Nasiona<br><span style="color:var(--text2);font-size:11px;">chia, siemię lniane</span></span>
+        </label>
+        <label class="allergy-check">
+          <input type="checkbox" value="straczki" onchange="this.closest('.allergy-check').classList.toggle('checked', this.checked)">
+          <span class="allergy-icon">🫛</span>
+          <span>Strączki<br><span style="color:var(--text2);font-size:11px;">fasola, soczewica</span></span>
+        </label>
+      </div>
+
+      <!-- Własna alergia -->
+      <div class="mt16">
+        <input type="text" id="allergy-custom" placeholder="+ Inne (wpisz np. awokado, grzyby...)"
+          style="font-size:13px;"
+          onkeydown="if(event.key==='Enter'){addCustomAllergy();}">
+      </div>
+      <div id="allergy-custom-list" class="flex flex-wrap gap8 mt8"></div>
+
+      <div class="mt32 flex gap8 flex-wrap align-center">
+        <button class="btn btn-ghost" onclick="obNext(3)">← Wróć</button>
+        <button class="btn btn-primary" onclick="finishOnboarding()">Zaczynamy 🌿</button>
+        <button class="btn" style="background:none; color:var(--text2); padding:12px 8px; font-size:13px;" onclick="skipAllergies()">Nie mam alergii →</button>
+      </div>
+    </div>
+  </div><!-- /screen-onboarding -->
+
+
+  <!-- ===================== MAIN APP ===================== -->
+  <div id="screen-main" style="display:none; padding-bottom: 80px;">
+
+    <!-- BOTTOM NAV -->
+    <nav class="nav-bottom visible" id="nav-bottom">
+      <div class="nav-tabs">
+        <button class="nav-tab active" id="nav-dziennik" onclick="showMainTab('dziennik')">
+          <span class="icon">📝</span>
+          <span>Dziennik</span>
+        </button>
+        <button class="nav-tab" id="nav-wyniki" onclick="showMainTab('wyniki')">
+          <span class="icon">📊</span>
+          <span>Wyniki</span>
+        </button>
+        <button class="nav-tab" id="nav-uzupelnij" onclick="showMainTab('uzupelnij')">
+          <span class="icon">🍽️</span>
+          <span>Uzupełnij</span>
+        </button>
+        <button class="nav-tab" id="nav-profil" onclick="showMainTab('profil')">
+          <span class="icon">👤</span>
+          <span>Profil</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- TAB: DZIENNIK -->
+    <div id="tab-dziennik" class="screen active" style="padding: 32px 0 80px;">
+      
+      <div class="eyebrow mb8" id="date-display">DZIŚ · ...</div>
+      <h2 class="mb24" style="font-size:20px; color:var(--text2); font-weight:500;">Co dziś jadłaś/eś?</h2>
+
+      <!-- Main input -->
+      <div class="card mb16">
+        <textarea 
+          id="main-input"
+          class="big-textarea"
+          placeholder="Napisz po ludzku, np:&#10;owsianka z bananem i orzechami,&#10;zupa pomidorowa, kotlet sojowy&#10;z kaszą i brokułami"
+          autofocus
+          onkeydown="if(event.ctrlKey && event.key==='Enter') analyzeInput();"
+        ></textarea>
+        <button class="btn btn-primary" style="width:100%; margin-top:10px; font-size:15px; justify-content:center;" onclick="analyzeInput()">
+          Analizuj skład diety →
+        </button>
+      </div>
+
+      <!-- Quick meal buttons -->
+      <div class="flex flex-wrap gap8 mb16">
+        <button class="btn btn-ghost" style="font-size:13px; padding:8px 16px;" onclick="toggleMealSection('sniadanie')">+ Śniadanie</button>
+        <button class="btn btn-ghost" style="font-size:13px; padding:8px 16px;" onclick="toggleMealSection('obiad')">+ Obiad</button>
+        <button class="btn btn-ghost" style="font-size:13px; padding:8px 16px;" onclick="toggleMealSection('kolacja')">+ Kolacja</button>
+        <button class="btn btn-ghost" style="font-size:13px; padding:8px 16px;" onclick="toggleMealSection('przekaska')">+ Przekąska</button>
+        <button class="btn btn-ghost" style="font-size:13px; padding:8px 16px; border-color:rgba(124,185,135,0.4); color:var(--green);" onclick="toggleMealSection('suplementy')">💊 Suplementy</button>
+      </div>
+
+      <!-- Meal sections -->
+      <div id="meal-sniadanie" class="meal-section">
+        <div class="eyebrow mb8">🌅 Śniadanie</div>
+        <div class="input-row">
+          <textarea style="min-height:80px; padding-bottom:48px;" id="input-sniadanie" placeholder="np. owsianka z owocami, kawa z mlekiem roślinnym"></textarea>
+          <button class="input-send" onclick="addMeal('sniadanie')" style="bottom:8px;">+</button>
+        </div>
+      </div>
+
+      <div id="meal-obiad" class="meal-section">
+        <div class="eyebrow mb8">☀️ Obiad</div>
+        <div class="input-row">
+          <textarea style="min-height:80px; padding-bottom:48px;" id="input-obiad" placeholder="np. kasza gryczana z tofu i brokułami, marchewka"></textarea>
+          <button class="input-send" onclick="addMeal('obiad')" style="bottom:8px;">+</button>
+        </div>
+      </div>
+
+      <div id="meal-kolacja" class="meal-section">
+        <div class="eyebrow mb8">🌙 Kolacja</div>
+        <div class="input-row">
+          <textarea style="min-height:80px; padding-bottom:48px;" id="input-kolacja" placeholder="np. chleb razowy z hummusem i pomidorem"></textarea>
+          <button class="input-send" onclick="addMeal('kolacja')" style="bottom:8px;">+</button>
+        </div>
+      </div>
+
+      <div id="meal-przekaska" class="meal-section">
+        <div class="eyebrow mb8">🍎 Przekąska</div>
+        <div class="input-row">
+          <textarea style="min-height:80px; padding-bottom:48px;" id="input-przekaska" placeholder="np. garść orzechów włoskich, jabłko"></textarea>
+          <button class="input-send" onclick="addMeal('przekaska')" style="bottom:8px;">+</button>
+        </div>
+      </div>
+
+      <!-- SUPLEMENTY SECTION -->
+      <div id="meal-suplementy" class="meal-section">
+        <div class="flex align-center gap8 mb8">
+          <span>💊</span>
+          <span class="eyebrow">Suplementy dziś</span>
+        </div>
+        <p class="micro mb16">Zaznacz co wzięłaś/eś — i wpisz swoją dawkę jeśli różni się od podanej</p>
+
+        <div class="supp-list" id="supp-grid">
+
+          <!-- D3 -->
+          <div class="supp-row" id="supp-D3">
+            <div class="supp-row-main" onclick="toggleSuppRow('D3')">
+              <div class="supp-row-check" id="supp-check-D3"></div>
+              <span class="supp-icon">☀️</span>
+              <div class="supp-item-info">
+                <div class="supp-item-name">Witamina D3</div>
+                <div class="supp-item-dose" id="supp-dose-label-D3">domyślnie 1000 IU</div>
+              </div>
+            </div>
+            <div class="supp-row-detail" id="supp-detail-D3">
+              <div class="supp-dose-row">
+                <span class="micro">Dawka:</span>
+                <input type="number" class="supp-dose-input" id="supp-input-D3" value="1000" min="1" max="50000"
+                  oninput="updateSuppDoseLabel('D3', this.value, 'IU')">
+                <span class="micro">IU</span>
+              </div>
+              <p class="micro" style="color:var(--text2); margin-top:4px;">Typowe dawki: 1000 / 2000 / 4000 / 5000 IU</p>
+            </div>
+          </div>
+
+          <!-- B12 -->
+          <div class="supp-row" id="supp-B12">
+            <div class="supp-row-main" onclick="toggleSuppRow('B12')">
+              <div class="supp-row-check" id="supp-check-B12"></div>
+              <span class="supp-icon">🔬</span>
+              <div class="supp-item-info">
+                <div class="supp-item-name">Witamina B12</div>
+                <div class="supp-item-dose" id="supp-dose-label-B12">domyślnie 100 µg</div>
+              </div>
+            </div>
+            <div class="supp-row-detail" id="supp-detail-B12">
+              <div class="supp-dose-row">
+                <span class="micro">Dawka:</span>
+                <input type="number" class="supp-dose-input" id="supp-input-B12" value="100" min="1" max="5000"
+                  oninput="updateSuppDoseLabel('B12', this.value, 'µg')">
+                <span class="micro">µg</span>
+              </div>
+              <p class="micro" style="color:var(--text2); margin-top:4px;">Typowe dawki: 100 µg/dzień lub 1000 µg 2× w tygodniu</p>
+            </div>
+          </div>
+
+          <!-- Żelazo -->
+          <div class="supp-row" id="supp-Fe">
+            <div class="supp-row-main" onclick="toggleSuppRow('Fe')">
+              <div class="supp-row-check" id="supp-check-Fe"></div>
+              <span class="supp-icon">🩸</span>
+              <div class="supp-item-info">
+                <div class="supp-item-name">Żelazo</div>
+                <div class="supp-item-dose" id="supp-dose-label-Fe">domyślnie 14 mg</div>
+              </div>
+            </div>
+            <div class="supp-row-detail" id="supp-detail-Fe">
+              <div class="supp-dose-row">
+                <span class="micro">Dawka:</span>
+                <input type="number" class="supp-dose-input" id="supp-input-Fe" value="14" min="1" max="200"
+                  oninput="updateSuppDoseLabel('Fe', this.value, 'mg')">
+                <span class="micro">mg</span>
+              </div>
+              <p class="micro" style="color:var(--text2); margin-top:4px;">Typowe dawki: 14 / 28 / 36 mg — zależy od preparatu</p>
+            </div>
+          </div>
+
+          <!-- Omega-3 DHA -->
+          <div class="supp-row" id="supp-omega3">
+            <div class="supp-row-main" onclick="toggleSuppRow('omega3')">
+              <div class="supp-row-check" id="supp-check-omega3"></div>
+              <span class="supp-icon">🐟</span>
+              <div class="supp-item-info">
+                <div class="supp-item-name">Omega-3 DHA (algowy)</div>
+                <div class="supp-item-dose" id="supp-dose-label-omega3">domyślnie 250 mg</div>
+              </div>
+            </div>
+            <div class="supp-row-detail" id="supp-detail-omega3">
+              <div class="supp-dose-row">
+                <span class="micro">Dawka:</span>
+                <input type="number" class="supp-dose-input" id="supp-input-omega3" value="250" min="1" max="3000"
+                  oninput="updateSuppDoseLabel('omega3', this.value, 'mg')">
+                <span class="micro">mg DHA</span>
+              </div>
+              <p class="micro" style="color:var(--text2); margin-top:4px;">Np. Doppelherz aktiv: sprawdź etykietę — zwykle 250–500 mg DHA</p>
+            </div>
+          </div>
+
+          <!-- Cynk -->
+          <div class="supp-row" id="supp-Zn">
+            <div class="supp-row-main" onclick="toggleSuppRow('Zn')">
+              <div class="supp-row-check" id="supp-check-Zn"></div>
+              <span class="supp-icon">🌿</span>
+              <div class="supp-item-info">
+                <div class="supp-item-name">Cynk</div>
+                <div class="supp-item-dose" id="supp-dose-label-Zn">domyślnie 10 mg</div>
+              </div>
+            </div>
+            <div class="supp-row-detail" id="supp-detail-Zn">
+              <div class="supp-dose-row">
+                <span class="micro">Dawka:</span>
+                <input type="number" class="supp-dose-input" id="supp-input-Zn" value="10" min="1" max="100"
+                  oninput="updateSuppDoseLabel('Zn', this.value, 'mg')">
+                <span class="micro">mg</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Magnez -->
+          <div class="supp-row" id="supp-magnez">
+            <div class="supp-row-main" onclick="toggleSuppRow('magnez')">
+              <div class="supp-row-check" id="supp-check-magnez"></div>
+              <span class="supp-icon">⚡</span>
+              <div class="supp-item-info">
+                <div class="supp-item-name">Magnez</div>
+                <div class="supp-item-dose" id="supp-dose-label-magnez">domyślnie 200 mg</div>
+              </div>
+            </div>
+            <div class="supp-row-detail" id="supp-detail-magnez">
+              <div class="supp-dose-row">
+                <span class="micro">Dawka:</span>
+                <input type="number" class="supp-dose-input" id="supp-input-magnez" value="200" min="1" max="1000"
+                  oninput="updateSuppDoseLabel('magnez', this.value, 'mg')">
+                <span class="micro">mg</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Jod -->
+          <div class="supp-row" id="supp-jod">
+            <div class="supp-row-main" onclick="toggleSuppRow('jod')">
+              <div class="supp-row-check" id="supp-check-jod"></div>
+              <span class="supp-icon">🌊</span>
+              <div class="supp-item-info">
+                <div class="supp-item-name">Jod</div>
+                <div class="supp-item-dose" id="supp-dose-label-jod">domyślnie 150 µg</div>
+              </div>
+            </div>
+            <div class="supp-row-detail" id="supp-detail-jod">
+              <div class="supp-dose-row">
+                <span class="micro">Dawka:</span>
+                <input type="number" class="supp-dose-input" id="supp-input-jod" value="150" min="1" max="1000"
+                  oninput="updateSuppDoseLabel('jod', this.value, 'µg')">
+                <span class="micro">µg</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Kwas foliowy -->
+          <div class="supp-row" id="supp-folian">
+            <div class="supp-row-main" onclick="toggleSuppRow('folian')">
+              <div class="supp-row-check" id="supp-check-folian"></div>
+              <span class="supp-icon">🧠</span>
+              <div class="supp-item-info">
+                <div class="supp-item-name">Kwas foliowy</div>
+                <div class="supp-item-dose" id="supp-dose-label-folian">domyślnie 400 µg</div>
+              </div>
+            </div>
+            <div class="supp-row-detail" id="supp-detail-folian">
+              <div class="supp-dose-row">
+                <span class="micro">Dawka:</span>
+                <input type="number" class="supp-dose-input" id="supp-input-folian" value="400" min="1" max="5000"
+                  oninput="updateSuppDoseLabel('folian', this.value, 'µg')">
+                <span class="micro">µg</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Wit C -->
+          <div class="supp-row" id="supp-vitC">
+            <div class="supp-row-main" onclick="toggleSuppRow('vitC')">
+              <div class="supp-row-check" id="supp-check-vitC"></div>
+              <span class="supp-icon">🍊</span>
+              <div class="supp-item-info">
+                <div class="supp-item-name">Witamina C</div>
+                <div class="supp-item-dose" id="supp-dose-label-vitC">domyślnie 500 mg</div>
+              </div>
+            </div>
+            <div class="supp-row-detail" id="supp-detail-vitC">
+              <div class="supp-dose-row">
+                <span class="micro">Dawka:</span>
+                <input type="number" class="supp-dose-input" id="supp-input-vitC" value="500" min="1" max="5000"
+                  oninput="updateSuppDoseLabel('vitC', this.value, 'mg')">
+                <span class="micro">mg</span>
+              </div>
+              <p class="micro" style="color:var(--text2); margin-top:4px;">Wit. C zwiększa wchłanianie żelaza 3× — warto brać z posiłkiem bogatym w Fe</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Własny suplement -->
+        <div class="mt16" style="border-top:1px solid var(--sep); padding-top:16px;">
+          <p class="micro mb8">Nie ma Twojego suplementu? Dodaj ręcznie:</p>
+          <div class="flex gap8 align-center flex-wrap">
+            <input type="text" id="supp-custom-name" placeholder="Nazwa, np. Koenzym Q10" style="font-size:13px; flex:1; min-width:140px;">
+            <input type="number" id="supp-custom-dose" placeholder="Dawka" style="font-size:13px; width:90px;">
+            <input type="text" id="supp-custom-unit" placeholder="Jednostka" style="font-size:13px; width:80px;">
+          </div>
+        </div>
+
+        <div class="mt16">
+          <button class="btn btn-primary" style="font-size:13px; padding:10px 20px;" onclick="addSupplements()">Dodaj zaznaczone ✓</button>
+        </div>
+      </div>
+
+      <!-- Added meals list -->
+      <div id="meals-list" class="mt16">
+        <div class="eyebrow mb8" id="meals-list-label" style="display:none;">Co już dodałaś/eś dziś</div>
+        <div id="meals-pills" class="flex flex-wrap gap8"></div>
+      </div>
+
+      <!-- Empty state -->
+      <div id="empty-state" class="empty-state mt32">
+        <span class="empty-icon">🌿</span>
+        <p style="font-size:17px; font-weight:500; margin-bottom:8px;">Co dziś jadłaś/eś?</p>
+        <p class="micro" style="max-width:280px; margin:0 auto;">Napisz po prostu — "owsianka z owocami i kawa" wystarczy. Nie musisz ważyć ani mierzyć.</p>
+      </div>
+
+      <!-- Loading state -->
+      <div id="loading-state" style="display:none;" class="mt32">
+        <div class="card">
+          <div class="flex align-center gap8 mb16">
+            <span>🔍</span>
+            <p id="loading-text" style="font-size:14px; color:var(--text2);">Analizuję Twój dzień...</p>
+          </div>
+          <div class="loading-bar"></div>
+        </div>
+      </div>
+
+      <!-- Error state -->
+      <div id="error-state" style="display:none;" class="mt16">
+        <div class="card" style="border-color:var(--red); background: rgba(196,97,74,0.05);">
+          <p style="margin-bottom:12px;">🤔 Hmm, nie rozpoznałam żadnych produktów.</p>
+          <p class="micro mb16">Spróbuj napisać prościej: "chleb, pomidor, ser, jabłko"</p>
+          <button class="btn btn-ghost" onclick="clearError()">Spróbuj ponownie</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TAB: WYNIKI -->
+    <div id="tab-wyniki" class="screen" style="padding: 32px 0 80px;">
+      
+      <div id="no-results-yet" class="empty-state">
+        <span class="empty-icon">📊</span>
+        <p style="font-size:17px; font-weight:500; margin-bottom:8px;">Brak wyników</p>
+        <p class="micro" style="max-width:280px; margin:0 auto;">Najpierw wpisz co zjadłaś dziś w zakładce Dziennik</p>
+      </div>
+
+      <div id="results-content" style="display:none;">
+        
+        <!-- Iron section -->
+        <div class="results-header">
+          <div>
+            <div class="eyebrow mb4">Analiza składników</div>
+            <p class="micro" id="results-subtitle">Na podstawie Twojego dziennika</p>
+          </div>
+        </div>
+
+        <!-- IRON CARD -->
+        <div class="card mb16 fade-up" id="iron-card">
+          <div class="flex align-center gap8 mb16">
+            <span style="font-size:20px;">🩸</span>
+            <span class="eyebrow">Żelazo</span>
+            <span style="margin-left:auto;" id="iron-status-icon">⚠️</span>
+          </div>
+
+          <div class="flex align-center gap8 mb4">
+            <span class="big-num" id="iron-val">—</span>
+            <span style="color:var(--text2); font-size:15px;">mg</span>
+          </div>
+          <p class="micro mb12" id="iron-norm-text">z potrzebnych — mg</p>
+
+          <div class="progress-wrap mb12">
+            <div class="progress-bar" id="iron-bar" style="width:0%; background:var(--red);"></div>
+          </div>
+
+          <p style="font-size:14px;" id="iron-summary">—</p>
+
+          <!-- Biodostępność pytania -->
+          <div class="bio-question show mt16" id="bio-q1">
+            <div class="flex align-center gap8 mb4">
+              <span>☕</span>
+              <p style="font-size:14px; font-weight:500;">Czy piłaś kawę lub herbatę w ciągu godziny od posiłku?</p>
+            </div>
+            <div class="bio-btns">
+              <button class="bio-btn" onclick="setBio('kawa')">Tak, kawę</button>
+              <button class="bio-btn" onclick="setBio('herbata_czarna')">Tak, czarną herbatę</button>
+              <button class="bio-btn" onclick="setBio('herbata_zielona')">Tak, zieloną herbatę</button>
+              <button class="bio-btn" onclick="setBio('nic')">Nie</button>
+            </div>
+          </div>
+
+          <div class="bio-question" id="bio-q2">
+            <div class="flex align-center gap8 mb4">
+              <span>🍋</span>
+              <p style="font-size:14px; font-weight:500;">Czy jadłaś coś z witaminą C przy posiłku bogatym w żelazo?</p>
+            </div>
+            <p class="micro mb12">papryka, cytrus, natka pietruszki, brokuł, kiwi</p>
+            <div class="bio-btns">
+              <button class="bio-btn" onclick="setBioC('tak')">Tak</button>
+              <button class="bio-btn" onclick="setBioC('nie')">Nie</button>
+              <button class="bio-btn" onclick="setBioC('nie_wiem')">Nie wiem</button>
+            </div>
+          </div>
+
+          <!-- Bio result -->
+          <div class="bio-result" id="bio-result">
+            <p id="bio-result-text" style="font-size:14px;"></p>
+          </div>
+
+        </div>
+
+        <!-- OTHER NUTRIENTS GRID -->
+        <div class="eyebrow mb12">Pozostałe składniki</div>
+        <div class="grid-2" id="nutrients-grid">
+          <!-- filled by JS -->
+        </div>
+
+        <!-- More button -->
+        <button class="more-btn" id="more-btn" onclick="showMoreNutrients()">+ Pokaż więcej składników</button>
+
+        <!-- Synergie -->
+        <div class="card mt24 fade-up fade-up-3" id="synergies-card" style="display:none;">
+          <div class="flex align-center gap8 mb16">
+            <span>💡</span>
+            <span class="eyebrow">Co warto wiedzieć</span>
+          </div>
+          <div id="synergies-list"></div>
+        </div>
+
+        <!-- B12 warning -->
+        <div id="b12-warning" style="display:none;" class="warning-b12 mt16">
+          <div class="flex align-center gap8 mb8">
+            <span>⚠️</span>
+            <span style="font-weight:600; color:var(--yellow);">Uwaga — B12</span>
+          </div>
+          <p style="font-size:14px;">Jako weganka/in nie możesz pokryć B12 z diety. Ta witamina jest tylko w produktach zwierzęcych.</p>
+          <p style="font-size:14px; margin-top:8px;"><strong>Suplementacja jest konieczna</strong> — 100 µg/dzień lub 1000 µg 2×/tydzień (cyjanokobalamina).</p>
+        </div>
+
+        <div class="disclaimer mt32">
+          <p class="micro">⚕️ <strong>Disclaimer:</strong> Aplikacja ma charakter edukacyjny i orientacyjny. Nie zastępuje konsultacji z dietetykiem ani lekarskiej diagnozy. Wartości składników są szacunkowe. W przypadku podejrzenia niedoborów skonsultuj się ze specjalistą i wykonaj badania (morfologia, ferrytyna, B12, 25-OH witamina D).</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TAB: JUTRO -->
+    <!-- TAB: UZUPEŁNIJ DZIŚ -->
+    <div id="tab-uzupelnij" class="screen" style="padding: 32px 0 80px;">
+      <div class="eyebrow mb4">Uzupełnij dziś</div>
+      <p style="color:var(--text2); font-size:13px; margin-bottom:24px;">Konkretne propozycje na resztę dnia — dopasowane do Twoich niedoborów</p>
+
+      <div id="no-uzupelnij-yet" class="empty-state">
+        <span class="empty-icon">🍽️</span>
+        <p style="font-size:17px; font-weight:500; margin-bottom:8px;">Brak sugestii</p>
+        <p class="micro" style="max-width:280px; margin:0 auto;">Najpierw wpisz co zjadłaś dziś — wtedy podpowiem co warto dorzucić</p>
+      </div>
+
+      <div id="uzupelnij-content" style="display:none;">
+        <div id="uzupelnij-list"></div>
+        <div class="disclaimer mt32">
+          <p class="micro">⚕️ Sugestie są orientacyjne. Przed zmianą suplementacji skonsultuj się z lekarzem lub dietetykiem.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: PROFIL -->
+    <div id="tab-profil" class="screen" style="padding: 32px 0 80px;">
+      <div class="eyebrow mb16">Twój profil</div>
+
+      <div class="card mb16" id="profil-card">
+        <!-- filled by renderProfil() -->
+      </div>
+
+      <div class="card mb16">
+        <div class="flex align-center gap8 mb16">
+          <span>⚠️</span>
+          <span style="font-weight:600; font-size:15px;">Alergie i nietolerancje</span>
+          <button class="btn btn-ghost" style="margin-left:auto; font-size:12px; padding:6px 12px;" onclick="editAllergies()">Edytuj</button>
+        </div>
+        <div id="profil-alergie">
+          <!-- filled by renderProfil() -->
+        </div>
+      </div>
+
+      <div class="card mb16">
+        <div class="flex align-center gap8 mb8">
+          <span>ℹ️</span>
+          <span style="font-weight:600; font-size:15px;">O danych</span>
+        </div>
+        <p class="micro" style="line-height:1.7;">Aplikacja nie zapisuje żadnych danych poza Twoją sesją w przeglądarce (sessionStorage). Dane znikają po zamknięciu karty — nic nie trafia na serwer, zero konta, zero logowania.</p>
+        <p class="micro mt8" style="line-height:1.7;">Jeśli chcesz zacząć od nowa — kliknij poniżej.</p>
+        <button class="btn btn-ghost mt16" style="font-size:13px; border-color:var(--red); color:var(--red);" onclick="resetApp()">🗑 Wyczyść wszystkie dane i zacznij od nowa</button>
+      </div>
+    </div>
+
+    <!-- MODAL: Edycja alergii -->
+    <div id="allergy-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:200; padding:24px; overflow-y:auto;">
+      <div style="max-width:560px; margin:0 auto; background:var(--s1); border-radius:var(--r16); padding:24px; border:1px solid var(--border);">
+        <div class="flex align-center gap8 mb16">
+          <span style="font-size:18px;">⚠️</span>
+          <span style="font-weight:600; font-size:16px;">Edytuj alergie</span>
+          <button onclick="closeAllergyModal()" style="margin-left:auto; background:none; border:none; color:var(--text2); font-size:22px; cursor:pointer; line-height:1;">×</button>
+        </div>
+        <div class="allergy-grid" id="allergy-modal-grid">
+          <!-- filled by editAllergies() -->
+        </div>
+        <div class="mt16">
+          <input type="text" id="allergy-modal-custom" placeholder="+ Inne (wpisz i Enter)" style="font-size:13px;"
+            onkeydown="if(event.key==='Enter'){addModalCustomAllergy();}">
+        </div>
+        <div id="allergy-modal-custom-list" class="flex flex-wrap gap8 mt8"></div>
+        <div class="flex gap8 mt24">
+          <button class="btn btn-primary" onclick="saveAllergyEdits()">Zapisz zmiany</button>
+          <button class="btn btn-ghost" onclick="closeAllergyModal()">Anuluj</button>
+        </div>
+      </div>
+    </div>
+
+  <!-- STAŁY FOOTER — widoczny na wszystkich zakładkach -->
+  <div style="padding: 16px 20px 96px; border-top: 1px solid var(--sep); margin-top: 8px;">
+    <p style="font-size:11px; color:var(--text2); line-height:1.7; text-align:center; max-width:480px; margin:0 auto;">
+      ⚕️ <strong style="color:var(--text);">Narzędzie edukacyjne — nie porada medyczna.</strong><br>
+      Wyniki są szacunkowe. Przed zmianą diety lub suplementacji skonsultuj się z lekarzem lub dietetykiem.<br>
+      <span style="margin-top:5px; display:block; opacity:0.7;">
+        🌐 Dane z własnej bazy oraz <a href="https://world.openfoodfacts.org" target="_blank" style="color:var(--gold); text-decoration:none;">OpenFoodFacts</a> · dane społecznościowe, mogą być niepełne.
+      </span>
+    </p>
+  </div>
+
+  </div><!-- /screen-main -->
+
+  <!-- MODAL: Potwierdź reset -->
+  <div id="reset-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:300; align-items:center; justify-content:center; padding:24px;">
+    <div style="background:var(--s1); border:1px solid var(--border); border-radius:var(--r16); padding:28px 24px; max-width:360px; width:100%; text-align:center;">
+      <p style="font-size:32px; margin-bottom:12px;">🗑️</p>
+      <p style="font-weight:600; font-size:16px; margin-bottom:8px;">Wyczyścić wszystkie dane?</p>
+      <p class="micro mb24">Profil, posiłki i suplementy zostaną usunięte. Onboarding rozpocznie się od nowa.</p>
+      <div class="flex gap8" style="justify-content:center;">
+        <button class="btn btn-ghost" onclick="cancelReset()">Anuluj</button>
+        <button class="btn" style="background:var(--red); color:#fff; font-weight:600;" onclick="confirmReset()">Tak, wyczyść</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /app -->
+
+<script>
+'use strict';
+
+/* ============================================
+   BAZA DANYCH SKŁADNIKÓW (per 100g)
+   Fe=żelazo(mg), B12=µg, Ca=wapń(mg), Zn=cynk(mg),
+   proteina=białko(g), folian=µg, omega3=g, vitC=mg(wit.C)
+============================================ */
+const BAZA = {
+  // ZBOŻA I KASZE
+  "owsianka": { Fe:3.9, B12:0, Ca:54, Zn:3.6, proteina:17, folian:56 },
+  "płatki owsiane": { Fe:3.9, B12:0, Ca:54, Zn:3.6, proteina:17, folian:56 },
+  "kasza gryczana": { Fe:2.2, B12:0, Ca:18, Zn:2.4, proteina:13, folian:30 },
+  "kasza jaglana": { Fe:3.0, B12:0, Ca:8, Zn:1.7, proteina:11, folian:85 },
+  "kasza": { Fe:2.2, B12:0, Ca:18, Zn:2.4, proteina:12, folian:40 },
+  "ryż brązowy": { Fe:0.8, B12:0, Ca:23, Zn:2.0, proteina:8, folian:20 },
+  "ryż": { Fe:0.4, B12:0, Ca:10, Zn:1.1, proteina:7, folian:8 },
+  "quinoa": { Fe:4.6, B12:0, Ca:47, Zn:3.1, proteina:14, folian:184 },
+  "chleb żytni": { Fe:2.0, B12:0, Ca:32, Zn:1.5, proteina:9, folian:60 },
+  "chleb razowy": { Fe:2.5, B12:0, Ca:73, Zn:1.8, proteina:9, folian:50 },
+  "pieczywo razowe": { Fe:2.5, B12:0, Ca:73, Zn:1.8, proteina:9, folian:50 },
+  "chleb": { Fe:1.8, B12:0, Ca:50, Zn:1.3, proteina:9, folian:40 },
+  "makaron": { Fe:1.3, B12:0, Ca:19, Zn:1.2, proteina:13, folian:18 },
+  "makaron pszenny": { Fe:1.3, B12:0, Ca:19, Zn:1.2, proteina:13, folian:18 },
+
+  // ROŚLINY STRĄCZKOWE
+  "soczewica": { Fe:6.6, B12:0, Ca:36, Zn:3.3, proteina:25, folian:479 },
+  "ciecierzyca": { Fe:4.3, B12:0, Ca:105, Zn:3.4, proteina:20, folian:557 },
+  "fasola": { Fe:5.9, B12:0, Ca:123, Zn:2.8, proteina:21, folian:394 },
+  "fasola czarna": { Fe:5.0, B12:0, Ca:123, Zn:3.7, proteina:22, folian:444 },
+  "groch": { Fe:4.7, B12:0, Ca:55, Zn:3.8, proteina:23, folian:274 },
+  "edamame": { Fe:2.3, B12:0, Ca:63, Zn:1.4, proteina:12, folian:303 },
+  "soja": { Fe:5.4, B12:0, Ca:90, Zn:2.5, proteina:22, folian:30 },
+  "strączkowe": { Fe:5.0, B12:0, Ca:80, Zn:3.0, proteina:22, folian:350 },
+
+  // PRZETWORY SOJOWE
+  "tofu": { Fe:5.4, B12:0, Ca:683, Zn:2.0, proteina:17, folian:15 },
+  "tempeh": { Fe:2.7, B12:0.1, Ca:111, Zn:1.1, proteina:19, folian:24 },
+  "kotlet sojowy": { Fe:4.5, B12:0, Ca:90, Zn:2.5, proteina:22, folian:30 },
+  "kotlety sojowe": { Fe:4.5, B12:0, Ca:90, Zn:2.5, proteina:22, folian:30 },
+  "mleko sojowe": { Fe:0.6, B12:0, Ca:120, Zn:0.3, proteina:3.3, folian:18 },
+  "mleko roślinne": { Fe:0.4, B12:0, Ca:120, Zn:0.2, proteina:2.0, folian:10 },
+  "mleko owsiane": { Fe:0.5, B12:0, Ca:120, Zn:0.3, proteina:1.5, folian:8 },
+  "mleko migdałowe": { Fe:0.3, B12:0, Ca:180, Zn:0.2, proteina:0.5, folian:5 },
+
+  // WARZYWA
+  "brokuł": { Fe:0.9, B12:0, Ca:74, Zn:0.6, proteina:3, folian:108, vitC:89 },
+  "brokuły": { Fe:0.9, B12:0, Ca:74, Zn:0.6, proteina:3, folian:108, vitC:89 },
+  "szpinak": { Fe:2.7, B12:0, Ca:136, Zn:0.8, proteina:3, folian:194, vitC:28, szczawiany:true },
+  // UWAGA: szpinak — biodostępność żelaza tylko ~2% przez szczawiany!
+  "jarmuż": { Fe:1.7, B12:0, Ca:254, Zn:0.6, proteina:4.3, folian:141, vitC:93 },
+  "ziemniaki": { Fe:0.8, B12:0, Ca:12, Zn:0.4, proteina:2.1, folian:16, vitC:20 },
+  "ziemniak": { Fe:0.8, B12:0, Ca:12, Zn:0.4, proteina:2.1, folian:16, vitC:20 },
+  "marchew": { Fe:0.3, B12:0, Ca:33, Zn:0.2, proteina:0.9, folian:19, vitC:6 },
+  "marchewka": { Fe:0.3, B12:0, Ca:33, Zn:0.2, proteina:0.9, folian:19, vitC:6 },
+  "papryka": { Fe:0.5, B12:0, Ca:10, Zn:0.3, proteina:1, folian:46, vitC:190 },
+  "papryka czerwona": { Fe:0.5, B12:0, Ca:10, Zn:0.3, proteina:1, folian:46, vitC:190 },
+  "papryka żółta": { Fe:0.5, B12:0, Ca:11, Zn:0.3, proteina:1, folian:40, vitC:183 },
+  "pomidor": { Fe:0.3, B12:0, Ca:18, Zn:0.2, proteina:0.9, folian:15, vitC:23 },
+  "pomidory": { Fe:0.3, B12:0, Ca:18, Zn:0.2, proteina:0.9, folian:15, vitC:23 },
+  "burak": { Fe:0.8, B12:0, Ca:16, Zn:0.3, proteina:1.6, folian:109 },
+  "buraki": { Fe:0.8, B12:0, Ca:16, Zn:0.3, proteina:1.6, folian:109 },
+  "kapusta kiszona": { Fe:0.7, B12:0, Ca:42, Zn:0.2, proteina:0.9, folian:17, vitC:20, fermentacja:true },
+  "cukinia": { Fe:0.4, B12:0, Ca:16, Zn:0.3, proteina:1.2, folian:24, vitC:18 },
+  "natka pietruszki": { Fe:6.2, B12:0, Ca:138, Zn:1.1, proteina:3, folian:152, vitC:133 },
+  "por": { Fe:2.1, B12:0, Ca:59, Zn:0.1, proteina:1.5, folian:64, vitC:10 },
+  "pory": { Fe:2.1, B12:0, Ca:59, Zn:0.1, proteina:1.5, folian:64, vitC:10 },
+  "pietruszka": { Fe:6.2, B12:0, Ca:138, Zn:1.1, proteina:3, folian:152, vitC:133 },
+  "dynia": { Fe:0.8, B12:0, Ca:21, Zn:0.3, proteina:1, folian:16, vitC:9 },
+  "szparagi": { Fe:2.1, B12:0, Ca:24, Zn:0.5, proteina:2.2, folian:149, vitC:5 },
+  "kalafior": { Fe:0.4, B12:0, Ca:22, Zn:0.3, proteina:1.9, folian:57, vitC:46 },
+  "sałata": { Fe:1.0, B12:0, Ca:36, Zn:0.3, proteina:1.4, folian:38, vitC:4 },
+  "rukola": { Fe:1.5, B12:0, Ca:160, Zn:0.5, proteina:2.6, folian:97, vitC:15 },
+
+  // OWOCE
+  "banan": { Fe:0.3, B12:0, Ca:5, Zn:0.2, proteina:1.1, folian:20, vitC:9 },
+  "jabłko": { Fe:0.1, B12:0, Ca:6, Zn:0.1, proteina:0.3, folian:3, vitC:5 },
+  "pomarańcza": { Fe:0.1, B12:0, Ca:40, Zn:0.1, proteina:0.9, folian:30, vitC:53 },
+  "cytryna": { Fe:0.6, B12:0, Ca:26, Zn:0.1, proteina:1.1, folian:11, vitC:53, vitCBoost:true },
+  "kiwi": { Fe:0.3, B12:0, Ca:34, Zn:0.1, proteina:1.1, folian:25, vitC:93, vitCBoost:true },
+  "truskawki": { Fe:0.4, B12:0, Ca:16, Zn:0.1, proteina:0.7, folian:24, vitC:59 },
+  "truskawka": { Fe:0.4, B12:0, Ca:16, Zn:0.1, proteina:0.7, folian:24, vitC:59 },
+  "morele suszone": { Fe:6.3, B12:0, Ca:55, Zn:0.4, proteina:3.4, folian:10 },
+  "morela": { Fe:0.4, B12:0, Ca:13, Zn:0.1, proteina:1.4, folian:9, vitC:10 },
+  "rodzynki": { Fe:2.6, B12:0, Ca:50, Zn:0.2, proteina:3, folian:5 },
+  "daktyle": { Fe:1.0, B12:0, Ca:39, Zn:0.4, proteina:2.5, folian:19 },
+  "figi suszone": { Fe:2.0, B12:0, Ca:162, Zn:0.6, proteina:3.5, folian:9 },
+  "śliwki": { Fe:0.5, B12:0, Ca:6, Zn:0.1, proteina:0.7, folian:5, vitC:10 },
+
+  // ORZECHY I NASIONA
+  "pestki dyni": { Fe:8.8, B12:0, Ca:46, Zn:7.8, proteina:30, folian:57, omega3:0.1 },
+  "nasiona słonecznika": { Fe:5.3, B12:0, Ca:78, Zn:5.0, proteina:21, folian:227, omega3:0.1 },
+  "siemię lniane": { Fe:5.7, B12:0, Ca:255, Zn:4.3, proteina:18, folian:87, omega3:22.8 },
+  "siemię": { Fe:5.7, B12:0, Ca:255, Zn:4.3, proteina:18, folian:87, omega3:22.8 },
+  "len": { Fe:5.7, B12:0, Ca:255, Zn:4.3, proteina:18, folian:87, omega3:22.8 },
+  "chia": { Fe:7.7, B12:0, Ca:631, Zn:4.6, proteina:17, folian:49, omega3:17.8 },
+  "orzechy włoskie": { Fe:2.9, B12:0, Ca:98, Zn:3.1, proteina:15, folian:98, omega3:9.1 },
+  "orzechy": { Fe:2.9, B12:0, Ca:98, Zn:3.1, proteina:15, folian:98, omega3:9.1 },
+  "migdały": { Fe:3.7, B12:0, Ca:264, Zn:3.1, proteina:21, folian:44 },
+  "migdał": { Fe:3.7, B12:0, Ca:264, Zn:3.1, proteina:21, folian:44 },
+  "orzechy nerkowca": { Fe:6.7, B12:0, Ca:37, Zn:5.8, proteina:18, folian:69 },
+  "nerkowce": { Fe:6.7, B12:0, Ca:37, Zn:5.8, proteina:18, folian:69 },
+  "tahini": { Fe:8.9, B12:0, Ca:426, Zn:4.6, proteina:17, folian:98 },
+  "sezam": { Fe:14.5, B12:0, Ca:975, Zn:7.8, proteina:17, folian:97 },
+
+  // NABIAŁ I JAJKA
+  "jajko": { Fe:1.8, B12:1.4, Ca:56, Zn:1.3, proteina:13, folian:47, hemowe:true },
+  "jajka": { Fe:1.8, B12:1.4, Ca:56, Zn:1.3, proteina:13, folian:47, hemowe:true },
+  "jaj": { Fe:1.8, B12:1.4, Ca:56, Zn:1.3, proteina:13, folian:47, hemowe:true },
+  "mleko": { Fe:0.1, B12:0.4, Ca:119, Zn:0.4, proteina:3.4, folian:5 },
+  "mleko krowie": { Fe:0.1, B12:0.4, Ca:119, Zn:0.4, proteina:3.4, folian:5 },
+  "jogurt": { Fe:0.1, B12:0.4, Ca:110, Zn:0.9, proteina:10, folian:14 },
+  "twaróg": { Fe:0.2, B12:0.6, Ca:95, Zn:0.5, proteina:17, folian:20 },
+  "twarog": { Fe:0.2, B12:0.6, Ca:95, Zn:0.5, proteina:17, folian:20 },
+  "ser żółty": { Fe:0.2, B12:1.5, Ca:720, Zn:4.0, proteina:25, folian:20 },
+  "ser zolty": { Fe:0.2, B12:1.5, Ca:720, Zn:4.0, proteina:25, folian:20 },
+  "ser": { Fe:0.3, B12:1.0, Ca:500, Zn:3.0, proteina:22, folian:20 },
+  "ser feta": { Fe:0.7, B12:1.7, Ca:493, Zn:2.9, proteina:14, folian:32 },
+  "feta": { Fe:0.7, B12:1.7, Ca:493, Zn:2.9, proteina:14, folian:32 },
+  "mozzarella": { Fe:0.4, B12:1.2, Ca:505, Zn:2.9, proteina:22, folian:7 },
+  "śmietana": { Fe:0.1, B12:0.2, Ca:70, Zn:0.2, proteina:2.5, folian:3 },
+  "masło": { Fe:0.0, B12:0.1, Ca:24, Zn:0.1, proteina:0.6, folian:3 },
+
+  // INNE
+  "hummus": { Fe:2.4, B12:0, Ca:38, Zn:1.6, proteina:8, folian:72 },
+  "czekolada gorzka": { Fe:10.9, B12:0, Ca:73, Zn:3.3, proteina:8, folian:10 },
+  "czekolada": { Fe:5.0, B12:0, Ca:60, Zn:2.0, proteina:6, folian:8 },
+  "spirulina": { Fe:28.5, B12:0, Ca:120, Zn:2.0, proteina:57, folian:94 },
+  // UWAGA: B12 w spirulinie jest NIEAKTYWNA — nie wliczamy!
+  "drożdże odżywcze": { Fe:5.1, B12:2.0, Ca:30, Zn:7.2, proteina:50, folian:3786 },
+  "drożdże": { Fe:5.1, B12:2.0, Ca:30, Zn:7.2, proteina:50, folian:3786 },
+  "płatki wzbogacane": { Fe:8.0, B12:1.5, Ca:100, Zn:3.5, proteina:8, folian:200 },
+  "miso": { Fe:2.5, B12:0, Ca:57, Zn:2.6, proteina:12, folian:19, fermentacja:true },
+  "kimchi": { Fe:0.7, B12:0, Ca:34, Zn:0.2, proteina:1.1, folian:24, fermentacja:true },
+  "olej lniany": { Fe:0, B12:0, Ca:0, Zn:0, proteina:0, folian:0, omega3:53.0 },
+  "zupa pomidorowa": { Fe:0.5, B12:0, Ca:25, Zn:0.3, proteina:1.5, folian:20, vitC:15 },
+  "zupa": { Fe:0.5, B12:0, Ca:20, Zn:0.2, proteina:2, folian:15 },
+  "ryż z warzywami": { Fe:1.0, B12:0, Ca:30, Zn:0.8, proteina:4, folian:25 },
+  "granola": { Fe:3.5, B12:0, Ca:50, Zn:2.5, proteina:10, folian:40 },
+  "musli": { Fe:3.8, B12:0, Ca:60, Zn:3.0, proteina:12, folian:60 },
+  "kawa": { Fe:0, B12:0, Ca:5, Zn:0, proteina:0.3, folian:0, kawa:true },
+  "herbata": { Fe:0, B12:0, Ca:0, Zn:0, proteina:0, folian:0, herbata:true },
+};
+
+/* Porcje domyślne w gramach na jedno wystąpienie */
+const PORCJE_DOMYSLNE = {
+  "owsianka": 80, "płatki owsiane": 80, "kasza gryczana": 100, "kasza jaglana": 100,
+  "kasza": 100, "ryż": 150, "ryż brązowy": 150, "quinoa": 80,
+  "chleb": 60, "chleb żytni": 60, "chleb razowy": 60, "pieczywo razowe": 60,
+  "makaron": 150, "makaron pszenny": 150,
+  "soczewica": 120, "ciecierzyca": 100, "fasola": 100, "fasola czarna": 100,
+  "groch": 100, "edamame": 80, "soja": 100,
+  "tofu": 150, "tempeh": 100, "kotlet sojowy": 80, "kotlety sojowe": 80,
+  "mleko sojowe": 250, "mleko roślinne": 250, "mleko owsiane": 250, "mleko migdałowe": 250,
+  "brokuł": 150, "brokuły": 150, "szpinak": 100, "jarmuż": 80,
+  "ziemniaki": 200, "ziemniak": 150, "marchew": 100, "marchewka": 100,
+  "papryka": 100, "papryka czerwona": 100, "pomidor": 120, "pomidory": 150,
+  "burak": 100, "buraki": 100, "cukinia": 120, "dynia": 120,
+  "natka pietruszki": 15, "por": 100, "pory": 100, "pietruszka": 15,
+  "jajko": 60, "jajka": 120, "jaj": 60,
+  "mleko": 200, "mleko krowie": 200, "jogurt": 150, "twaróg": 150, "twarog": 150,
+  "ser żółty": 30, "ser zolty": 30, "ser": 40, "ser feta": 50, "feta": 50, "mozzarella": 50,
+  "banan": 120, "jabłko": 150, "pomarańcza": 150, "cytryna": 30, "kiwi": 80,
+  "truskawki": 150, "morele suszone": 30, "rodzynki": 30, "daktyle": 30, "figi suszone": 30,
+  "pestki dyni": 30, "nasiona słonecznika": 30, "siemię lniane": 15, "siemię": 15,
+  "chia": 20, "orzechy włoskie": 30, "orzechy": 30, "migdały": 30, "migdał": 30,
+  "orzechy nerkowca": 30, "nerkowce": 30, "tahini": 20, "sezam": 10,
+  "hummus": 80, "czekolada gorzka": 20, "czekolada": 30,
+  "drożdże odżywcze": 10, "drożdże": 10, "spirulina": 5,
+  "zupa pomidorowa": 400, "zupa": 350,
+  "granola": 60, "musli": 80,
+  "kawa": 200, "herbata": 200,
+};
+
+/* Słownik synonimów — mapuje warianty na klucz bazy */
+const SYNONIMY = {
+  "owies": "owsianka", "płatki": "płatki owsiane", "gryczana": "kasza gryczana",
+  "jaglana": "kasza jaglana", "jaglanka": "kasza jaglana",
+  "ryż biały": "ryż", "białe": "ryż",
+  "chlebek": "chleb", "bułka": "chleb", "bułki": "chleb",
+  "makaron": "makaron pszenny", "spaghetti": "makaron pszenny",
+  "soczewka": "soczewica", "soczewkę": "soczewica", "soczewicy": "soczewica",
+  "cieciorka": "ciecierzyca", "cieciorek": "ciecierzyca",
+  "fasolka": "fasola", "fasoli": "fasola",
+  "kotlet": "kotlet sojowy", "kotlety": "kotlet sojowy",
+  "mleko soi": "mleko sojowe", "soymilk": "mleko sojowe",
+  "brokuły": "brokuł", "brokułów": "brokuł", "brokula": "brokuł",
+  "szpinakowi": "szpinak", "szpinaku": "szpinak",
+  "ziemniaki": "ziemniaki", "kartofle": "ziemniaki", "kartofli": "ziemniaki",
+  "marchewki": "marchew", "marchewkę": "marchew",
+  "papryki": "papryka", "paprykę": "papryka",
+  "pomidory": "pomidor", "pomidora": "pomidor", "pomidorów": "pomidor",
+  "buraki": "burak", "buraczki": "burak",
+  "jajko": "jajko", "jaj": "jajko", "jajka": "jajko", "jajec": "jajko",
+  "mleka": "mleko", "mleczko": "mleko",
+  "jogurcie": "jogurt", "jogurtu": "jogurt",
+  "twarogiem": "twaróg", "twarożek": "twaróg",
+  "serem": "ser", "sera": "ser",
+  "fetą": "ser feta", "fety": "ser feta",
+  "banan": "banan", "banany": "banan",
+  "jabłko": "jabłko", "jabłka": "jabłko",
+  "pomarańcze": "pomarańcza", "pomarańczy": "pomarańcza",
+  "cytrusów": "pomarańcza", "cytrus": "pomarańcza",
+  "kiwi": "kiwi",
+  "orzechy": "orzechy włoskie", "orzechów": "orzechy włoskie",
+  "migdałów": "migdały",
+  "pestek": "pestki dyni", "pestka": "pestki dyni",
+  "słonecznik": "nasiona słonecznika",
+  "siemię": "siemię lniane", "len": "siemię lniane",
+  "drożdże": "drożdże odżywcze",
+  "kawą": "kawa", "kawy": "kawa",
+  "herbatą": "herbata", "herbaty": "herbata",
+  "natka": "natka pietruszki", "pietruszką": "natka pietruszki",
+};
+
+/* Słownik porcji tekstowych */
+const PORCJE_TEKSTOWE = {
+  "kawałek": 100, "kawałki": 100, "kawałków": 100,
+  "garść": 30, "garści": 30, "garścia": 30,
+  "łyżka": 15, "łyżki": 15, "łyżek": 15,
+  "łyżeczka": 5, "łyżeczki": 5,
+  "szklanka": 250, "szklanki": 250, "szklanek": 250,
+  "mała porcja": 80, "małej porcji": 80,
+  "duża porcja": 200, "dużej porcji": 200,
+  "duży talerz": 400, "talerz": 300,
+  "miska": 300, "miski": 300,
+  "kubek": 250, "kubka": 250,
+  "porcja": 120,
+  "trochę": 50, "trochę": 50,
+  "dużo": 200, "sporo": 150,
+  "mało": 50,
+};
+
+/* ============================================
+   NORMY (IŻŻ, EFSA 2024)
+============================================ */
+const NORMY = {
+  zelazo: {
+    kobietaMenstruujaca: 18,
+    kobietaBezMenstruacji: 10,
+    mezczyzna: 10,
+    domyslna: 18,
+    // WHO: dla diety wegańskiej mnożnik 1.8x ze względu na niehemowe żelazo
+    wegan_mnoznik: 1.8,
+  },
+  B12: 2.4,       // µg
+  witD: 800,      // IU
+  wapn: 1000,     // mg
+  proteina: 48,   // g (dla 60kg, 0.8g/kg)
+  folian: 400,    // µg
+  cynk: { kobieta: 8, mezczyzna: 11, domyslna: 8 },
+  omega3: { kobieta: 1.1, mezczyzna: 1.6, domyslna: 1.1 },
+};
+
+/* Stan aplikacji */
+let profil = { plec: 'kobieta', miesiaczka: 'tak', dieta: 'wegetarianin', alergie: [] };
+let posilki = []; // lista wpisanych posiłków (teksty)
+let suplementyDzis = {}; // {B12: mg, Fe: mg, witD: IU, ...} — suplementy wzięte dziś
+let wyniki = null; // wyniki analizy
+let bioKawa = null;  // odpowiedź na pytanie o kawę
+let bioVitC = null;  // odpowiedź na pytanie o wit. C
+let showMore = false;
+
+/* ============================================
+   INICJALIZACJA
+============================================ */
+document.addEventListener('DOMContentLoaded', () => {
+  // Resetuj sessionStorage o północy
+  const dzisiaj = new Date().toDateString();
+  const zapisanyDzien = sessionStorage.getItem('skl_dzien');
+  if (zapisanyDzien && zapisanyDzien !== dzisiaj) {
+    sessionStorage.removeItem('skl_profil');
+    sessionStorage.removeItem('skl_posilki');
+    sessionStorage.removeItem('skl_wyniki');
+    // zachowaj dane trendów na 7 dni
+  }
+  sessionStorage.setItem('skl_dzien', dzisiaj);
+
+  // Wczytaj profil
+  const savedProfil = sessionStorage.getItem('skl_profil');
+  if (savedProfil) {
+    profil = JSON.parse(savedProfil);
+    initMain();
+  } else {
+    showScreen('onboarding');
+  }
+
+  // Wczytaj posiłki
+  const savedPosilki = sessionStorage.getItem('skl_posilki');
+  if (savedPosilki) {
+    posilki = JSON.parse(savedPosilki);
+    renderMealPills();
+  }
+
+  // Wczytaj suplementy dnia
+  const savedSupp = sessionStorage.getItem('skl_suplementy');
+  if (savedSupp) {
+    suplementyDzis = JSON.parse(savedSupp);
+  }
+
+  // Aktualizuj datę
+  updateDateDisplay();
+
+  // Enter w main-input
+  document.getElementById('main-input').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      analyzeInput();
+    }
+  });
+});
+
+function updateDateDisplay() {
+  const dni = ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'];
+  const miesiace = ['stycznia', 'lutego', 'marca', 'kwietnia', 'maja', 'czerwca',
+    'lipca', 'sierpnia', 'września', 'października', 'listopada', 'grudnia'];
+  const d = new Date();
+  const el = document.getElementById('date-display');
+  if (el) {
+    el.textContent = `DZIŚ · ${dni[d.getDay()]}, ${d.getDate()} ${miesiace[d.getMonth()]}`;
+  }
+}
+
+function showScreen(name) {
+  document.getElementById('screen-onboarding').style.display = (name === 'onboarding') ? 'flex' : 'none';
+  document.getElementById('screen-main').style.display = (name === 'main') ? 'block' : 'none';
+}
+
+function initMain() {
+  showScreen('main');
+  renderProfil();
+  // Jeśli mamy wyniki, pokaż od razu w wynikach
+  const savedWyniki = sessionStorage.getItem('skl_wyniki');
+  if (savedWyniki) {
+    wyniki = JSON.parse(savedWyniki);
+    renderResults(wyniki);
+  }
+}
+
+/* ============================================
+   ONBOARDING
+============================================ */
+const obData = { plec: null, miesiaczka: null, dieta: null, alergie: [] };
+
+function selectTile(el, key) {
+  const group = el.closest('.tile-group');
+  group.querySelectorAll('.tile').forEach(t => t.classList.remove('selected'));
+  el.classList.add('selected');
+  obData[key] = el.dataset.val;
+}
+
+function toggleAllergyCheck(label) {
+  // Nie robimy nic — checkbox i label działają natywnie.
+  // Tylko aktualizujemy klasę wizualną po zmianie stanu.
+  const cb = label.querySelector('input[type="checkbox"]');
+  // setTimeout 0 żeby poczekać aż przeglądarka zaktualizuje cb.checked
+  setTimeout(() => {
+    label.classList.toggle('checked', cb.checked);
+  }, 0);
+}
+
+function addCustomAllergy() {
+  const input = document.getElementById('allergy-custom');
+  const val = input.value.trim();
+  if (!val) return;
+  if (!obData.alergie.includes(val)) {
+    obData.alergie.push(val.toLowerCase());
+    renderCustomAllergyPills();
+  }
+  input.value = '';
+}
+
+function renderCustomAllergyPills() {
+  const container = document.getElementById('allergy-custom-list');
+  container.innerHTML = '';
+  obData.alergie.forEach((a, i) => {
+    const pill = document.createElement('div');
+    pill.className = 'pill';
+    pill.style.borderColor = 'rgba(196,97,74,0.4)';
+    pill.style.color = 'var(--red)';
+    pill.innerHTML = `⚠️ ${a} <button class="pill-remove" onclick="removeCustomAllergy(${i})">×</button>`;
+    container.appendChild(pill);
+  });
+}
+
+function removeCustomAllergy(i) {
+  obData.alergie.splice(i, 1);
+  renderCustomAllergyPills();
+}
+
+function obNext(step) {
+  // Walidacja
+  if (step === 2) {
+    if (!obData.plec) { alert('Wybierz płeć biologiczną'); return; }
+  }
+  if (step === 3) {
+    if (obData.plec === 'kobieta' && !obData.miesiaczka) { alert('Wybierz opcję dotyczącą miesiączki'); return; }
+  }
+  if (step === 4) {
+    if (!obData.dieta) { alert('Wybierz typ diety'); return; }
+  }
+
+  // Pokaż/ukryj krok 2 w zależności od płci
+  if (step === 2 && obData.plec !== 'kobieta') {
+    obData.miesiaczka = 'nie';
+    obNext(3);
+    return;
+  }
+
+  document.querySelectorAll('.ob-step').forEach(s => s.classList.remove('active'));
+  document.getElementById(`ob-step-${step}`).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function skipAllergies() {
+  obData.alergie = [];
+  finishOnboarding();
+}
+
+function finishOnboarding() {
+  if (!obData.dieta) { alert('Wybierz typ diety'); return; }
+
+  // Zbierz zaznaczone checkboxy alergii
+  const checkboxes = document.querySelectorAll('#allergy-grid input[type="checkbox"]:checked');
+  const alergieGrid = Array.from(checkboxes).map(cb => cb.value);
+  const alergieWszystkie = [...new Set([...alergieGrid, ...obData.alergie])];
+
+  profil = {
+    plec: obData.plec || 'kobieta',
+    miesiaczka: obData.miesiaczka || 'tak',
+    dieta: obData.dieta || 'wegetarianin',
+    alergie: alergieWszystkie,
+  };
+  sessionStorage.setItem('skl_profil', JSON.stringify(profil));
+  initMain();
+}
+
+/* ============================================
+   NAWIGACJA ZAKŁADEK
+============================================ */
+function showMainTab(tab) {
+  ['dziennik', 'wyniki', 'uzupelnij', 'profil'].forEach(t => {
+    document.getElementById(`tab-${t}`).classList.remove('active');
+    document.getElementById(`nav-${t}`).classList.remove('active');
+  });
+  document.getElementById(`tab-${tab}`).classList.add('active');
+  document.getElementById(`nav-${tab}`).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+/* ============================================
+   POSIŁKI
+============================================ */
+function toggleMealSection(typ) {
+  const el = document.getElementById(`meal-${typ}`);
+  el.classList.toggle('open');
+}
+
+function addMeal(typ) {
+  const input = document.getElementById(`input-${typ}`);
+  const text = input.value.trim();
+  if (!text) return;
+
+  const nazwy = { sniadanie: '🌅 Śniadanie', obiad: '☀️ Obiad', kolacja: '🌙 Kolacja', przekaska: '🍎 Przekąska' };
+  posilki.push({ typ, label: nazwy[typ], text });
+  input.value = '';
+  document.getElementById(`meal-${typ}`).classList.remove('open');
+
+  savePosilki();
+  renderMealPills();
+  document.getElementById('empty-state').style.display = 'none';
+}
+
+function savePosilki() {
+  sessionStorage.setItem('skl_posilki', JSON.stringify(posilki));
+}
+
+/* ============================================
+   SUPLEMENTY — nowy system z edytowalną dawką
+============================================ */
+
+// Lista suplementów i ich mapowanie na składniki odżywcze
+const SUPP_CONFIG = {
+  D3:     { nutrient: 'witD',   unit: 'IU',  defaultDose: 1000 },
+  B12:    { nutrient: 'B12',    unit: 'µg',  defaultDose: 100  },
+  Fe:     { nutrient: 'Fe',     unit: 'mg',  defaultDose: 14   },
+  omega3: { nutrient: 'omega3', unit: 'mg',  defaultDose: 250  }, // mg DHA → g w obliczeniach
+  Zn:     { nutrient: 'Zn',     unit: 'mg',  defaultDose: 10   },
+  magnez: { nutrient: 'magnez', unit: 'mg',  defaultDose: 200  },
+  jod:    { nutrient: 'jod',    unit: 'µg',  defaultDose: 150  },
+  folian: { nutrient: 'folian', unit: 'µg',  defaultDose: 400  },
+  vitC:   { nutrient: 'vitC',   unit: 'mg',  defaultDose: 500  },
+};
+
+const suppChecked = {}; // { D3: true, B12: false, ... }
+
+function toggleSuppRow(key) {
+  suppChecked[key] = !suppChecked[key];
+  const row = document.getElementById(`supp-${key}`);
+  const check = document.getElementById(`supp-check-${key}`);
+  row.classList.toggle('checked', suppChecked[key]);
+  check.textContent = suppChecked[key] ? '✓' : '';
+}
+
+function updateSuppDoseLabel(key, val, unit) {
+  const label = document.getElementById(`supp-dose-label-${key}`);
+  if (label && val) label.textContent = `${val} ${unit}`;
+}
+
+function addSupplements() {
+  const aktywne = Object.keys(suppChecked).filter(k => suppChecked[k]);
+  const customName = document.getElementById('supp-custom-name').value.trim();
+  const customDose = document.getElementById('supp-custom-dose').value.trim();
+  const customUnit = document.getElementById('supp-custom-unit').value.trim();
+
+  if (aktywne.length === 0 && !customName) return;
+
+  // Zbuduj nowy obiekt suplementyDzis
+  suplementyDzis = {};
+
+  aktywne.forEach(key => {
+    const cfg = SUPP_CONFIG[key];
+    const input = document.getElementById(`supp-input-${key}`);
+    const dose = input ? parseFloat(input.value) || cfg.defaultDose : cfg.defaultDose;
+
+    if (cfg.nutrient === 'omega3') {
+      // Przelicz mg DHA na gramy
+      suplementyDzis.omega3 = (suplementyDzis.omega3 || 0) + dose / 1000;
+    } else {
+      suplementyDzis[cfg.nutrient] = (suplementyDzis[cfg.nutrient] || 0) + dose;
+    }
+  });
+
+  sessionStorage.setItem('skl_suplementy', JSON.stringify(suplementyDzis));
+
+  // Etykiety do pillsa
+  const names = aktywne.map(key => {
+    const cfg = SUPP_CONFIG[key];
+    const input = document.getElementById(`supp-input-${key}`);
+    const dose = input ? (parseFloat(input.value) || cfg.defaultDose) : cfg.defaultDose;
+    const nameEl = document.querySelector(`#supp-${key} .supp-item-name`);
+    const name = nameEl ? nameEl.textContent : key;
+    return `${name} ${dose} ${cfg.unit}`;
+  });
+
+  if (customName) {
+    names.push(`${customName}${customDose ? ' ' + customDose + (customUnit ? ' ' + customUnit : '') : ''}`);
+  }
+
+  // Zaktualizuj lub dodaj wpis suplementów w dzienniku
+  posilki = posilki.filter(p => p.typ !== 'suplementy');
+  posilki.push({
+    typ: 'suplementy',
+    label: '💊 Suplementy',
+    text: names.join(', '),
+    suplementy: suplementyDzis,
+  });
+
+  savePosilki();
+  renderMealPills();
+  document.getElementById('meal-suplementy').classList.remove('open');
+  document.getElementById('empty-state').style.display = 'none';
+
+  // Reset
+  Object.keys(suppChecked).forEach(k => {
+    suppChecked[k] = false;
+    const row = document.getElementById(`supp-${k}`);
+    const check = document.getElementById(`supp-check-${k}`);
+    if (row) { row.classList.remove('checked'); }
+    if (check) { check.textContent = ''; }
+    // Przywróć domyślną dawkę
+    const cfg = SUPP_CONFIG[k];
+    const input = document.getElementById(`supp-input-${k}`);
+    if (input) { input.value = cfg.defaultDose; }
+    updateSuppDoseLabel(k, cfg.defaultDose, cfg.unit);
+  });
+
+  document.getElementById('supp-custom-name').value = '';
+  document.getElementById('supp-custom-dose').value = '';
+  document.getElementById('supp-custom-unit').value = '';
+
+  // Przelicz wyniki z nowymi suplementami
+  if (wyniki) {
+    // Zbierz wszystkie teksty posiłków i przelicz od nowa
+    const allText = posilki.filter(p => p.typ !== 'suplementy').map(p => p.text).join(' ');
+    if (allText.trim()) {
+      const parsedProducts = parseText(allText);
+      if (parsedProducts.length > 0) {
+        const results = obliczSkladniki(parsedProducts);
+        wyniki = results;
+        sessionStorage.setItem('skl_wyniki', JSON.stringify(results));
+        renderResults(results);
+      }
+    }
+  }
+}
+
+function renderMealPills() {
+  const container = document.getElementById('meals-pills');
+  const label = document.getElementById('meals-list-label');
+
+  if (posilki.length === 0) {
+    container.innerHTML = '';
+    label.style.display = 'none';
+    return;
+  }
+
+  label.style.display = 'block';
+  container.innerHTML = '';
+
+  posilki.forEach((p, i) => {
+    const pill = document.createElement('div');
+    const isSupp = p.typ === 'suplementy';
+    pill.className = 'pill' + (isSupp ? ' pill-supp' : '');
+    pill.innerHTML = `<span>${p.label}: ${p.text.substring(0, 40)}${p.text.length > 40 ? '…' : ''}</span>
+      <button class="pill-remove" onclick="removeMeal(${i})" title="Usuń" style="${isSupp ? 'color:var(--green)' : ''}">×</button>`;
+    container.appendChild(pill);
+  });
+}
+
+function removeMeal(i) {
+  posilki.splice(i, 1);
+  savePosilki();
+  renderMealPills();
+}
+
+/* ============================================
+   ANALIZA — z fallback do OpenFoodFacts
+============================================ */
+async function analyzeInput() {
+  const mainText = document.getElementById('main-input').value.trim();
+
+  let allText = mainText;
+  posilki.forEach(p => { if (p.typ !== 'suplementy') allText += ' ' + p.text; });
+
+  if (!allText.trim()) return;
+
+  if (mainText) {
+    posilki.push({ typ: 'inne', label: '📝 Inne', text: mainText });
+    document.getElementById('main-input').value = '';
+    savePosilki();
+    renderMealPills();
+    document.getElementById('empty-state').style.display = 'none';
+  }
+
+  const loading = document.getElementById('loading-state');
+  const error = document.getElementById('error-state');
+  loading.style.display = 'block';
+  error.style.display = 'none';
+
+  // Parsuj lokalnie
+  const lokalneFound = parseText(allText);
+  const lokalneKlucze = new Set(lokalneFound.map(f => f.klucz));
+
+  // Znajdź słowa które NIE pasowały do lokalnej bazy
+  const nieznane = znajdzNieznaneSlowa(allText, lokalneKlucze);
+
+  // Odpytaj OpenFoodFacts dla nieznanych produktów
+  let offFound = [];
+  if (nieznane.length > 0) {
+    loading.querySelector('#loading-text') && (loading.querySelector('#loading-text').textContent = `Szukam ${nieznane.join(', ')} w OpenFoodFacts…`);
+    const offResults = await Promise.all(nieznane.map(n => searchOpenFoodFacts(n)));
+    offFound = offResults.filter(Boolean);
+  }
+
+  loading.style.display = 'none';
+
+  const allFound = [...lokalneFound, ...offFound];
+
+  if (allFound.length === 0) {
+    error.style.display = 'block';
+    return;
+  }
+
+  // Oznacz produkty z OFF żeby pokazać info
+  offFound.forEach(f => { f.zOFF = true; });
+
+  const results = obliczSkladniki(allFound);
+  wyniki = results;
+  sessionStorage.setItem('skl_wyniki', JSON.stringify(results));
+
+  renderResults(results);
+
+  // Pokaż info o produktach z OFF jeśli były
+  if (offFound.length > 0) {
+    const nazwy = offFound.map(f => f.klucz).join(', ');
+    pokazInfoOFF(nazwy);
+  }
+
+  showMainTab('wyniki');
+}
+
+function znajdzNieznaneSlowa(text, znaneKlucze) {
+  /* Wyciąga potencjalne nazwy produktów których nie ma w lokalnej bazie */
+  const norm = text.toLowerCase().replace(/[,;!?.]/g, ' ').replace(/\s+/g, ' ').trim();
+
+  // Usuń słowa kluczowe porcji i stopwords
+  const stopwords = new Set([
+    'i', 'z', 'na', 'do', 'w', 'się', 'ze', 'po', 'przez', 'a', 'lub', 'albo',
+    'trochę', 'dużo', 'mało', 'garść', 'łyżka', 'łyżki', 'łyżeczka', 'szklanka',
+    'kubek', 'talerz', 'miska', 'kawałek', 'porcja', 'duży', 'mały', 'duże', 'małe',
+    'ugotowany', 'smażony', 'pieczony', 'surowy', 'świeży', 'dzisiaj', 'rano', 'wieczór',
+    'śniadanie', 'obiad', 'kolacja', 'przekąska', 'zupa', 'sałatka', 'kanapka',
+    'gram', 'gramy', 'gramów', 'ml', 'litr',
+  ]);
+
+  // Produkty które już znaleźliśmy lokalnie — nie szukaj ponownie
+  const lokalneNazwy = new Set([...Object.keys(BAZA), ...Object.keys(SYNONIMY)]);
+
+  const slowa = norm.split(/\s+/).filter(s => s.length > 3 && !stopwords.has(s) && !/^\d+$/.test(s));
+
+  // Znajdź słowa/bigramy które nie są w lokalnej bazie
+  const kandydaci = [];
+  for (let i = 0; i < slowa.length; i++) {
+    const jedno = slowa[i];
+    const dwa = i + 1 < slowa.length ? `${slowa[i]} ${slowa[i+1]}` : null;
+
+    if (dwa && !lokalneNazwy.has(dwa) && !kandydaci.includes(dwa)) {
+      kandydaci.push(dwa);
+      i++; // pomiń następne słowo
+    } else if (!lokalneNazwy.has(jedno) && !kandydaci.includes(jedno)) {
+      kandydaci.push(jedno);
+    }
+  }
+
+  // Ogranicz do max 5 żeby nie spamować API
+  return kandydaci.slice(0, 5);
+}
+
+async function searchOpenFoodFacts(query) {
+  /* Szuka produktu w OpenFoodFacts, zwraca obiekt jak z lokalnej bazy lub null */
+  try {
+    const url = `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&search_simple=1&action=process&json=1&page_size=3&fields=product_name,nutriments,serving_size`;
+    const res = await fetch(url, { signal: AbortSignal.timeout(4000) });
+    if (!res.ok) return null;
+    const data = await res.json();
+
+    if (!data.products || data.products.length === 0) return null;
+
+    // Weź pierwszy wynik który ma dane odżywcze
+    const produkt = data.products.find(p => p.nutriments && p.nutriments['energy-kcal_100g']);
+    if (!produkt) return null;
+
+    const n = produkt.nutriments;
+
+    // Mapuj do naszego formatu (wartości per 100g)
+    const dane = {
+      Fe:       parseFloat(n['iron_100g'])           || 0,
+      B12:      parseFloat(n['vitamin-b12_100g'])     || 0,
+      Ca:       parseFloat(n['calcium_100g'])         || 0,
+      Zn:       parseFloat(n['zinc_100g'])            || 0,
+      proteina: parseFloat(n['proteins_100g'])        || 0,
+      folian:   parseFloat(n['folates_100g'])         || 0,
+      omega3:   parseFloat(n['omega-3-fat_100g'])     || 0,
+      vitC:     parseFloat(n['vitamin-c_100g'])       || 0,
+    };
+
+    // Fe w OFF jest w mg/100g — tak samo jak u nas, OK
+    // Ale B12, folian mogą być w µg/100g lub mg/100g — sprawdź
+    if (n['vitamin-b12_100g'] && n['vitamin-b12_100g'] < 0.1) {
+      dane.B12 = n['vitamin-b12_100g'] * 1000; // przelicz mg→µg
+    }
+    if (n['folates_100g'] && n['folates_100g'] < 1) {
+      dane.folian = n['folates_100g'] * 1000; // przelicz mg→µg
+    }
+
+    const nazwaOFF = produkt.product_name || query;
+    const klucz = query.toLowerCase();
+
+    // Dodaj do lokalnej bazy na czas sesji
+    BAZA[klucz] = dane;
+    PORCJE_DOMYSLNE[klucz] = 100;
+
+    return { klucz, gramy: 100, zOFF: true, nazwaOFF };
+
+  } catch (e) {
+    // Timeout lub brak internetu — cicho ignoruj
+    return null;
+  }
+}
+
+function pokazInfoOFF(nazwy) {
+  /* Pokazuje mały banner że dane pochodzą z OpenFoodFacts */
+  const existing = document.getElementById('off-info-banner');
+  if (existing) existing.remove();
+
+  const banner = document.createElement('div');
+  banner.id = 'off-info-banner';
+  banner.style.cssText = `
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: rgba(124,185,135,0.08);
+    border: 1px solid rgba(124,185,135,0.25);
+    border-radius: 10px;
+    font-size: 12px;
+    color: var(--text2);
+    line-height: 1.5;
+  `;
+  banner.innerHTML = `🌐 <strong style="color:var(--green)">OpenFoodFacts</strong> — dane dla: <em>${nazwy}</em>. Jakość zależy od bazy użytkowników — mogą być niepełne.`;
+
+  const mealsCard = document.getElementById('meals-list');
+  if (mealsCard) mealsCard.after(banner);
+}
+
+function clearError() {
+  document.getElementById('error-state').style.display = 'none';
+  document.getElementById('main-input').focus();
+}
+
+/* ============================================
+   PARSOWANIE TEKSTU
+============================================ */
+function parseText(text) {
+  /* 
+    Logika parsowania:
+    1. Normalizuj tekst — małe litery, usuń znaki przestankowe
+    2. Szukaj porcji tekstowych ("garść", "łyżka", "szklanka")
+    3. Szukaj liczb przed produktem (np. "2 jajka")
+    4. Dopasuj do bazy przez synonimy
+    5. Jeśli brak porcji — użyj porcji domyślnej
+  */
+  const norm = text.toLowerCase()
+    .replace(/[,;!?.]/g, ' ')
+    .replace(/\s+/g, ' ');
+
+  const found = []; // [{klucz, gramy}]
+
+  // Sprawdź synonimy i klucze bazy
+  const allKeys = [...Object.keys(BAZA), ...Object.keys(SYNONIMY)];
+  // Sortuj od najdłuższych żeby "kotlet sojowy" był przed "soja"
+  allKeys.sort((a, b) => b.length - a.length);
+
+  const usedPositions = new Set();
+
+  for (const key of allKeys) {
+    if (!norm.includes(key)) continue;
+
+    const realKey = SYNONIMY[key] || key;
+    if (!BAZA[realKey]) continue;
+
+    // Sprawdź czy już znaleziony
+    const idx = norm.indexOf(key);
+    if ([...usedPositions].some(pos => Math.abs(pos - idx) < 5)) continue;
+    usedPositions.add(idx);
+
+    // Sprawdź czy już mamy ten produkt
+    if (found.some(f => f.klucz === realKey)) continue;
+
+    // Znajdź porcję
+    let gramy = szukajPorcji(norm, key);
+
+    found.push({ klucz: realKey, gramy });
+  }
+
+  return found;
+}
+
+function szukajPorcji(text, produktKlucz) {
+  /* Szuka porcji w pobliżu klucza produktu */
+  const idx = text.indexOf(produktKlucz);
+  const kontekst = text.substring(Math.max(0, idx - 30), idx + produktKlucz.length + 10);
+
+  // Sprawdź porcje tekstowe
+  for (const [porcja, gramy] of Object.entries(PORCJE_TEKSTOWE)) {
+    if (kontekst.includes(porcja)) {
+      return gramy;
+    }
+  }
+
+  // Sprawdź liczby przed produktem (np. "2 jajka")
+  const matchLiczba = kontekst.match(/(\d+(?:[,.]\d+)?)\s*(?:g|gram|g\b)?/);
+  if (matchLiczba) {
+    const liczba = parseFloat(matchLiczba[1].replace(',', '.'));
+    if (liczba > 0 && liczba <= 2000) {
+      // Jeśli po liczbie jest "g" to to gramy, inaczej porcje
+      if (matchLiczba[0].includes('g')) return liczba;
+      // Inaczej — mnożnik porcji standardowej
+      const porcjaDomyslna = PORCJE_DOMYSLNE[SYNONIMY[produktKlucz] || produktKlucz] || 100;
+      return liczba * porcjaDomyslna;
+    }
+  }
+
+  // Fallback — porcja domyślna
+  const realKey = SYNONIMY[produktKlucz] || produktKlucz;
+  return PORCJE_DOMYSLNE[realKey] || 100;
+}
+
+/* ============================================
+   OBLICZENIA SKŁADNIKÓW
+============================================ */
+function obliczSkladniki(produkty) {
+  /* Sumuje wszystkie składniki z wykrytych produktów */
+  let total = {
+    Fe: 0, B12: 0, Ca: 0, Zn: 0, proteina: 0, folian: 0, omega3: 0, vitC: 0,
+    maPijakaweFlagę: false, maVitCBogatą: false,
+    maKawe: false, maHerbate: false, maSzpinak: false, maSoja: false,
+    produktyLista: [],
+  };
+
+  for (const { klucz, gramy } of produkty) {
+    const dane = BAZA[klucz];
+    if (!dane) continue;
+
+    const mnoznik = gramy / 100;
+
+    total.Fe += (dane.Fe || 0) * mnoznik;
+    total.B12 += (dane.B12 || 0) * mnoznik;
+    total.Ca += (dane.Ca || 0) * mnoznik;
+    total.Zn += (dane.Zn || 0) * mnoznik;
+    total.proteina += (dane.proteina || 0) * mnoznik;
+    total.folian += (dane.folian || 0) * mnoznik;
+    total.omega3 += (dane.omega3 || 0) * mnoznik;
+    total.vitC += (dane.vitC || 0) * mnoznik;
+
+    // Flagi specjalne
+    if (dane.kawa) total.maKawe = true;
+    if (dane.herbata) total.maHerbate = true;
+    if (dane.szczawiany) total.maSzpinak = true;
+    if (klucz === 'soja' || klucz === 'tofu' || klucz === 'kotlet sojowy') total.maSoja = true;
+    if ((dane.vitC || 0) > 30) total.maVitCBogata = true;
+
+    total.produktyLista.push({ klucz, gramy, dane });
+  }
+
+  // Zaokrąglij
+  Object.keys(total).forEach(k => {
+    if (typeof total[k] === 'number') total[k] = Math.round(total[k] * 10) / 10;
+  });
+
+  // Dodaj suplementy wzięte dziś
+  // Suplementy mają 100% biodostępności (dla uproszczenia)
+  // Wyjątek: żelazo w suplemencie ~15-20% dla niehemowego chelatu
+  if (suplementyDzis.B12) total.B12 = Math.round((total.B12 + suplementyDzis.B12) * 10) / 10;
+  if (suplementyDzis.Fe) total.Fe = Math.round((total.Fe + suplementyDzis.Fe) * 10) / 10;  // dawka suplementu wprost — użytkownik wpisał ile wziął
+  if (suplementyDzis.witD) total.witD = (total.witD || 0) + suplementyDzis.witD;
+  if (suplementyDzis.omega3) total.omega3 = Math.round((total.omega3 + suplementyDzis.omega3) * 10) / 10;
+  if (suplementyDzis.Zn) total.Zn = Math.round((total.Zn + suplementyDzis.Zn) * 10) / 10;
+  if (suplementyDzis.folian) total.folian = Math.round((total.folian + suplementyDzis.folian) * 10) / 10;
+  if (suplementyDzis.vitC) total.vitC = (total.vitC || 0) + suplementyDzis.vitC;
+  total.maSuplementy = Object.keys(suplementyDzis).length > 0;
+
+  return total;
+}
+
+/* ============================================
+   BIODOSTĘPNOŚĆ ŻELAZA — SERCE APLIKACJI
+============================================ */
+function obliczBiodostepneZelazo(zelazoBrutto, bioKawa, bioVitC, produkty) {
+  /*
+    KROK 1: Określ typ żelaza
+    - Żelazo hemowe (jajka, nabiał): absorpcja ~25%
+    - Żelazo niehemowe (rośliny): absorpcja bazowa ~8%
+    
+    KROK 2: Modyfikatory inhibitory:
+    - Kawa (taniny): ×0.40 (-60%)
+    - Herbata czarna: ×0.38 (-62%)
+    - Herbata zielona: ×0.55 (-45%)
+    - Szczawiany (surowy szpinak): ×0.75
+    
+    KROK 3: Modyfikatory aktywatory:
+    - Witamina C w posiłku: ×3.0 dla niehemowego
+    - Fermentacja (tempeh, kimchi, miso): ×1.5
+    
+    KROK 4: Zwróć wynik z wyjaśnieniem
+  */
+
+  let mnoznik = 1.0;
+  const wyjasnieniaLista = [];
+
+  // Bazowa biodostępność niehemowego żelaza: 8%
+  // Po mnożeniu przez 100% = surowe mg
+  // W tej logice zostawiamy surowe mg i korygujemy mnożnikiem absorpcji
+  // Absorpcja bazowa niehemowego ≈ 8%
+  const absorpcjaBazowa = 0.08;
+
+  // Sprawdź czy są produkty z hemowym żelazem (jajka)
+  let zelazHemowe = 0;
+  let zelazNiehemowe = zelazoBrutto;
+
+  if (produkty && produkty.produktyLista) {
+    produkty.produktyLista.forEach(p => {
+      if (p.dane.hemowe) {
+        const fe = (p.dane.Fe || 0) * p.gramy / 100;
+        zelazHemowe += fe;
+        zelazNiehemowe -= fe;
+      }
+    });
+  }
+
+  // Hemowe: 25% absorpcja
+  const absHemowe = zelazHemowe * 0.25;
+  // Niehemowe: 8% bazowa
+  let absNiehemowe = zelazNiehemowe * absorpcjaBazowa;
+
+  // Modyfikatory
+  if (bioKawa === 'kawa') {
+    mnoznik *= 0.40;
+    wyjasnieniaLista.push("☕ Kawa po posiłku zmniejszyła wchłanianie żelaza o ~60% przez taniny");
+  } else if (bioKawa === 'herbata_czarna') {
+    mnoznik *= 0.38;
+    wyjasnieniaLista.push("🍵 Czarna herbata zmniejszyła wchłanianie żelaza o ~62% przez taniny i polifenole");
+  } else if (bioKawa === 'herbata_zielona') {
+    mnoznik *= 0.55;
+    wyjasnieniaLista.push("🍵 Zielona herbata zmniejszyła wchłanianie żelaza o ~45%");
+  }
+
+  // Wit. C
+  if (bioVitC === 'tak') {
+    mnoznik *= 3.0;
+    wyjasnieniaLista.push("🍋 Witamina C zwiększyła wchłanianie żelaza niehemowego nawet 3×!");
+  }
+
+  // Szpinak (szczawiany) — dodatkowe info
+  if (produkty && produkty.maSzpinak) {
+    wyjasnieniaLista.push("🥬 Szpinak zawiera szczawiany — gotowany szpinak ma lepszą biodostępność żelaza niż surowy");
+  }
+
+  // Fermentacja
+  let fermentacjaMnoznik = 1.0;
+  if (produkty && produkty.produktyLista) {
+    produkty.produktyLista.forEach(p => {
+      if (p.dane.fermentacja) fermentacjaMnoznik = 1.5;
+    });
+  }
+  if (fermentacjaMnoznik > 1) {
+    wyjasnieniaLista.push("✨ Fermentowane produkty (tempeh, kimchi, miso) zwiększają biodostępność żelaza");
+  }
+
+  absNiehemowe *= mnoznik * fermentacjaMnoznik;
+
+  const zelazoBiodostepne = absHemowe + absNiehemowe;
+
+  return {
+    zelazoBrutto,
+    zelazoBiodostepne: Math.round(zelazoBiodostepne * 10) / 10,
+    mnoznik,
+    wyjasnienia: wyjasnieniaLista,
+    zelazHemowe,
+    zelazNiehemowe,
+  };
+}
+
+/* ============================================
+   WYŚWIETLANIE WYNIKÓW
+============================================ */
+function getNormaZelaza() {
+  if (profil.plec === 'mezczyzna') return NORMY.zelazo.mezczyzna;
+  if (profil.miesiaczka === 'tak') {
+    if (profil.dieta === 'weganin') return NORMY.zelazo.kobietaMenstruujaca * NORMY.zelazo.wegan_mnoznik;
+    return NORMY.zelazo.kobietaMenstruujaca;
+  }
+  if (profil.dieta === 'weganin') return NORMY.zelazo.kobietaBezMenstruacji * NORMY.zelazo.wegan_mnoznik;
+  return NORMY.zelazo.kobietaBezMenstruacji;
+}
+
+function getNormaCynku() {
+  return profil.plec === 'mezczyzna' ? NORMY.cynk.mezczyzna : NORMY.cynk.kobieta;
+}
+
+function getNormaOmega3() {
+  return profil.plec === 'mezczyzna' ? NORMY.omega3.mezczyzna : NORMY.omega3.kobieta;
+}
+
+function renderResults(w) {
+  if (!w) return;
+
+  // Pokaż sekcję wyników
+  document.getElementById('no-results-yet').style.display = 'none';
+  document.getElementById('results-content').style.display = 'block';
+
+  // Iron
+  const normaFe = getNormaZelaza();
+  const pctFe = Math.min(Math.round((w.Fe / normaFe) * 100), 100);
+
+  document.getElementById('iron-val').textContent = w.Fe.toFixed(1);
+  document.getElementById('iron-norm-text').textContent = `z potrzebnych ${normaFe} mg (${pctFe}%)`;
+
+  const ironBar = document.getElementById('iron-bar');
+  ironBar.style.width = pctFe + '%';
+
+  let ironColor, ironIcon, ironMsg;
+  if (pctFe >= 90) {
+    ironColor = 'var(--green)'; ironIcon = '✅'; 
+    ironMsg = `Świetnie! Masz wystarczającą ilość żelaza z diety. Pamiętaj o biodostępności.`;
+  } else if (pctFe >= 50) {
+    ironColor = 'var(--yellow)'; ironIcon = '⚠️';
+    ironMsg = `Prawie wystarczająco. Brakuje Ci ~${(normaFe - w.Fe).toFixed(1)} mg żelaza na dziś.`;
+  } else {
+    ironColor = 'var(--red)'; ironIcon = '🔴';
+    ironMsg = `Brakuje Ci ~${(normaFe - w.Fe).toFixed(1)} mg żelaza — to ${Math.round(100 - pctFe)}% normy do uzupełnienia.`;
+  }
+
+  ironBar.style.background = ironColor;
+  document.getElementById('iron-status-icon').textContent = ironIcon;
+  document.getElementById('iron-summary').textContent = ironMsg;
+
+  // Pokaż pytania bio tylko raz
+  document.getElementById('bio-q1').classList.add('show');
+  document.getElementById('bio-q2').classList.remove('show');
+  document.getElementById('bio-result').classList.remove('show');
+
+  // Reset bio answers
+  bioKawa = null; bioVitC = null;
+  document.querySelectorAll('.bio-btn').forEach(b => b.classList.remove('selected'));
+
+  // Pozostałe składniki
+  renderNutrients(w);
+
+  // Synergie
+  renderSynergies(w);
+
+  // B12 warning dla wegan
+  const b12warn = document.getElementById('b12-warning');
+  b12warn.style.display = profil.dieta === 'weganin' ? 'block' : 'none';
+
+  // Wyniki zakładki
+  const subtitle = document.getElementById('results-subtitle');
+  subtitle.textContent = `Wykryto ${w.produktyLista ? w.produktyLista.length : 0} produktów`;
+
+  // Rekomendacje / uzupełnij dziś
+  renderUzupelnij(w);
+
+  // Profil
+  renderProfil();
+}
+
+function renderNutrients(w) {
+  const grid = document.getElementById('nutrients-grid');
+  grid.innerHTML = '';
+
+  const skladniki = [
+    {
+      key: 'B12', icon: '🔬', name: 'Witamina B12',
+      val: w.B12, norm: NORMY.B12, unit: 'µg',
+      desc: (v, n) => v < 1 ? 'B12 jest krytyczna dla układu nerwowego. Dieta roślinna jej nie pokrywa.' :
+        v < n ? 'Niedobór B12 objawia się zmęczeniem i problemami neurologicznymi.' :
+          'Dobry poziom B12 — wspiera układ nerwowy i produkcję czerwonych krwinek.'
+    },
+    {
+      key: 'Ca', icon: '🦴', name: 'Wapń',
+      val: w.Ca, norm: NORMY.wapn, unit: 'mg',
+      desc: (v, n) => v < n * 0.5 ? 'Wapń jest kluczowy dla kości i skurczów mięśni.' :
+        v < n ? 'Uzupełnij wapń — jarmuż, tofu, migdały to świetne roślinne źródła.' :
+          'Dobry poziom wapnia — wspiera mocne kości i prawidłową pracę serca.'
+    },
+    {
+      key: 'Zn', icon: '🌿', name: 'Cynk',
+      val: w.Zn, norm: getNormaCynku(), unit: 'mg',
+      desc: (v, n) => v < n * 0.5 ? 'Cynk wpływa na odporność i kondycję skóry. Roślinny wchłania się gorzej.' :
+        v < n ? 'Cynk blokowany przez fityniany. Namaczaj orzechy i rośliny strączkowe.' :
+          'Cynk wspiera układ odpornościowy i syntezę białek.'
+    },
+    {
+      key: 'folian', icon: '🧠', name: 'Kwas foliowy',
+      val: w.folian, norm: NORMY.folian, unit: 'µg',
+      desc: (v, n) => v < n * 0.5 ? 'Kwas foliowy jest niezbędny dla produkcji DNA i czerwonych krwinek.' :
+        v < n ? 'Uzupełnij foliany — soczewica i szpinak są tu bardzo pomocne.' :
+          'Świetny poziom folianów — wspiera zdrowie układu nerwowego i sercowo-naczyniowego.'
+    },
+    {
+      key: 'proteina', icon: '💪', name: 'Białko',
+      val: w.proteina, norm: NORMY.proteina, unit: 'g',
+      desc: (v, n) => v < n * 0.5 ? 'Niewystarczające białko wpływa na mięśnie i regenerację. Dodaj strączki!' :
+        v < n ? 'Uzupełnij białko — tofu, tempeh, soczewica, ciecierzyca to najlepsze źródła.' :
+          'Dobry poziom białka. Pamiętaj o różnorodności źródeł dla pełnego profilu aminokwasów.'
+    },
+    {
+      key: 'omega3', icon: '🐟', name: 'Omega-3 (ALA)',
+      val: w.omega3, norm: getNormaOmega3(), unit: 'g',
+      desc: (v, n) => v < n * 0.3 ? 'ALA to roślinne omega-3 — siemię lniane i orzechy włoskie są najlepszym źródłem.' :
+        v < n ? 'Konwersja ALA do DHA/EPA jest tylko ~5%. Rozważ suplement algowy DHA.' :
+          'Dobry poziom roślinnych omega-3. Dla EPA/DHA rozważ suplement z alg.'
+    },
+  ];
+
+  const primaryKeys = ['B12', 'Ca', 'Zn', 'folian', 'proteina', 'omega3'];
+  const moreKeys = ['witD', 'jod', 'magnez'];
+
+  primaryKeys.forEach((key, i) => {
+    const s = skladniki.find(x => x.key === key);
+    if (!s) return;
+    const card = createNutrientCard(s);
+    card.style.animationDelay = `${0.05 + i * 0.05}s`;
+    card.classList.add('fade-up');
+    grid.appendChild(card);
+  });
+
+  // More nutrients (dodatkowe)
+  if (showMore) {
+    const moreData = [
+      { key: 'witD', icon: '☀️', name: 'Wit. D', val: 0, norm: NORMY.witD, unit: 'IU',
+        desc: () => 'Polska jesień/zima — dieta nie pokryje wit. D. Suplementacja 800-2000 IU/dzień jest wskazana.' },
+      { key: 'jod', icon: '🌊', name: 'Jod', val: 0, norm: 150, unit: 'µg',
+        desc: () => 'Weganie są narażeni na niedobór jodu. Rozważ suplementację lub jodowaną sól.' },
+      { key: 'magnez', icon: '⚡', name: 'Magnez', val: Math.round(w.Ca * 0.4), norm: 310, unit: 'mg',
+        desc: (v, n) => v < n ? 'Magnez wspiera pracę mięśni, snu i nerwów. Pestki dyni, orzechy, kasza.' : 'Dobry poziom magnezu.' },
+    ];
+
+    moreData.forEach(s => {
+      const card = createNutrientCard(s);
+      card.classList.add('fade-up');
+      grid.appendChild(card);
+    });
+
+    document.getElementById('more-btn').style.display = 'none';
+  }
+}
+
+function createNutrientCard(s) {
+  const { icon, name, val, norm, unit, desc } = s;
+  const pct = Math.min(Math.round((val / norm) * 100), 100);
+  const isOk = pct >= 90;
+  const isWarn = pct >= 50 && pct < 90;
+  const isBad = pct < 50;
+
+  const statusIcon = isOk ? '✅' : isWarn ? '⚠️' : '🔴';
+  const barColor = isOk ? 'var(--green)' : isWarn ? 'var(--yellow)' : 'var(--red)';
+
+  const card = document.createElement('div');
+  card.className = 'ingr-card';
+  card.innerHTML = `
+    <div class="ingr-header">
+      <span class="ingr-icon">${icon}</span>
+      <span class="ingr-name">${name}</span>
+      <span style="margin-left:auto; font-size:14px;">${statusIcon}</span>
+    </div>
+    <div class="ingr-numbers">
+      <span class="ingr-val" style="color:${barColor}">${val > 0 ? val.toFixed(val < 10 ? 1 : 0) : '?'}</span>
+      <span class="ingr-unit">${unit}</span>
+      <span class="ingr-norm">/ ${norm} ${unit}</span>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-bar" style="width:${pct}%; background:${barColor};"></div>
+    </div>
+    <p class="ingr-desc">${desc(val, norm)}</p>
+  `;
+  return card;
+}
+
+function showMoreNutrients() {
+  showMore = true;
+  if (wyniki) renderNutrients(wyniki);
+}
+
+function renderSynergies(w) {
+  const card = document.getElementById('synergies-card');
+  const list = document.getElementById('synergies-list');
+  const items = [];
+
+  if (w.maVitCBogata || w.vitC > 30) {
+    items.push({ type: 'ok', text: 'Witamina C w Twojej diecie zwiększa wchłanianie żelaza z roślin nawet 3× — łącz ją z posiłkami bogatymi w żelazo' });
+  }
+  if (w.maSzpinak) {
+    items.push({ type: 'warn', text: 'Szpinak zawiera szczawiany które wiążą żelazo — gotowany szpinak ma 2× lepszą biodostępność Fe niż surowy' });
+  }
+  if (w.Ca > 500) {
+    items.push({ type: 'info', text: 'Duże dawki wapnia mogą zmniejszać wchłanianie żelaza — nie jedz serów i bogatych w żelazo produktów w tym samym czasie' });
+  }
+  if (w.produktyLista) {
+    const maFerment = w.produktyLista.some(p => p.dane && p.dane.fermentacja);
+    if (maFerment) {
+      items.push({ type: 'ok', text: 'Fermentowane produkty (tempeh, kimchi, miso) zwiększają biodostępność minerałów przez rozkład fitynianów' });
+    }
+  }
+  if (w.omega3 < 0.5) {
+    items.push({ type: 'info', text: 'Siemię lniane (15g/dzień) pokryje całą Twoją dzienną potrzebę ALA — dodaj je do jogurtu lub owsianki' });
+  }
+
+  if (items.length === 0) {
+    card.style.display = 'none';
+    return;
+  }
+
+  card.style.display = 'block';
+  list.innerHTML = '';
+
+  items.forEach(item => {
+    const el = document.createElement('div');
+    el.className = 'synergy-item';
+    const icons = { ok: '✅', warn: '⚠️', info: 'ℹ️' };
+    el.innerHTML = `<p style="font-size:14px;">${icons[item.type]} ${item.text}</p>`;
+    list.appendChild(el);
+  });
+}
+
+/* ============================================
+   BIODOSTĘPNOŚĆ — pytania użytkownika
+============================================ */
+function setBio(val) {
+  bioKawa = val;
+
+  document.querySelectorAll('#bio-q1 .bio-btn').forEach(b => {
+    b.classList.toggle('selected', b.getAttribute('onclick').includes(`'${val}'`));
+  });
+
+  // Pokaż następne pytanie
+  document.getElementById('bio-q2').classList.add('show');
+}
+
+function setBioC(val) {
+  bioVitC = val;
+
+  document.querySelectorAll('#bio-q2 .bio-btn').forEach(b => {
+    b.classList.toggle('selected', b.getAttribute('onclick').includes(`'${val}'`));
+  });
+
+  // Oblicz biodostępność
+  if (wyniki && bioKawa !== null) {
+    const bio = obliczBiodostepneZelazo(wyniki.Fe, bioKawa, bioVitC, wyniki);
+    renderBioResult(bio);
+  }
+}
+
+function renderBioResult(bio) {
+  const resultEl = document.getElementById('bio-result');
+  const textEl = document.getElementById('bio-result-text');
+
+  resultEl.classList.add('show');
+
+  let type, mainText;
+
+  if (bioKawa && bioKawa !== 'nic' && bioVitC !== 'tak') {
+    // Kawa/herbata bez wit. C — najgorszy scenariusz
+    type = 'bad';
+    const wyj = bio.wyjasnienia[0] || '';
+    // Pogrub procent straty jeśli jest w tekście
+    const wyjBold = wyj.replace(/(~?\d+%)/g, '<strong>$1</strong>');
+    mainText = `⚠️ ${wyjBold}<br><span style="margin-top:6px; display:block;">Realne przyswojone żelazo: ok. <strong>${bio.zelazoBiodostepne} mg</strong> zamiast ${bio.zelazoBrutto.toFixed(1)} mg — rozważ zmianę kolejności posiłków i napojów.</span>`;
+  } else if (bioVitC === 'tak' && (!bioKawa || bioKawa === 'nic')) {
+    // Wit. C bez inhibitorów — dobry scenariusz
+    type = 'good';
+    const wyj = bio.wyjasnienia.join(' ').replace(/(~?\d+×|3×)/g, '<strong>$1</strong>');
+    mainText = `✅ ${wyj}<br><span style="margin-top:6px; display:block;">Realne przyswojone żelazo: ok. <strong>${bio.zelazoBiodostepne} mg</strong>.</span>`;
+  } else if (bioVitC === 'tak' && bioKawa && bioKawa !== 'nic') {
+    // Wit. C I kawa — mieszany scenariusz
+    type = 'warn';
+    const wyj = bio.wyjasnienia.map(w => w.replace(/(~?\d+%|~?\d+×)/g, '<strong>$1</strong>')).join(' ');
+    mainText = `⚠️ ${wyj}<br><span style="margin-top:6px; display:block;">Realne przyswojone żelazo: ok. <strong>${bio.zelazoBiodostepne} mg</strong> — wit. C częściowo zneutralizowała wpływ kawy, ale warto nie łączyć ich z posiłkiem bogatym w żelazo.</span>`;
+  } else {
+    // Nic nie pito — bazowa biodostępność
+    type = 'warn';
+    mainText = `ℹ️ Szacowane przyswojone żelazo: ok. <strong>${bio.zelazoBiodostepne} mg</strong>. ${bio.wyjasnienia.join(' ')}`;
+  }
+
+  resultEl.className = `bio-result show ${type}`;
+  textEl.innerHTML = mainText;
+
+  if (wyniki) renderUzupelnij(wyniki, bio);
+}
+
+/* ============================================
+   UZUPEŁNIJ DZIŚ — konkretne propozycje na resztę dnia
+============================================ */
+
+/*
+  Mapa alergii → produkty których NIE polecamy
+*/
+const ALERGIE_MAPA = {
+  'orzechy':    ['orzech', 'migdał', 'nerkowiec', 'nerkowce', 'migdały'],
+  'orzeszki':   ['orzeszki ziemne', 'arachidowe'],
+  'gluten':     ['pszenica', 'żytni', 'razowy', 'chleb', 'makaron', 'owies', 'kasza', 'orkisz'],
+  'laktoza':    ['mleko', 'ser ', 'jogurt', 'twaróg', 'nabiał', 'śmietana'],
+  'jajka':      ['jajko', 'jajka'],
+  'soja':       ['tofu', 'tempeh', 'soja', 'sojowe', 'edamame'],
+  'sezam':      ['sezam', 'tahini'],
+  'cytrusy':    ['cytrus', 'cytryn', 'pomarańcz', 'limetta'],
+  'jagodowe':   ['truskawki', 'maliny', 'jagod'],
+  'kokos':      ['kokos'],
+  'nasiona':    ['chia', 'siemię', 'siemię lniane', 'len'],
+  'straczki':   ['soczewica', 'fasola', 'ciecierzyca', 'groch', 'strączk'],
+};
+
+function czyMaAlergen(text, alergie) {
+  if (!alergie || alergie.length === 0) return false;
+  const textLower = text.toLowerCase();
+  for (const alergia of alergie) {
+    const slowa = ALERGIE_MAPA[alergia] || [alergia.toLowerCase()];
+    if (slowa.some(s => textLower.includes(s))) return true;
+  }
+  return false;
+}
+
+function filterItems(items, alergie) {
+  /* Filtruje propozycje — sprawdza CAŁY tekst (nazwa + jak + ewentualnie string) */
+  return items.filter(item => {
+    if (typeof item === 'string') return !czyMaAlergen(item, alergie);
+    // Obiekt z polami nazwa, jak itp. — sprawdź wszystkie pola tekstowe
+    const fullText = [item.nazwa, item.jak, item.tip].filter(Boolean).join(' ');
+    return !czyMaAlergen(fullText, alergie);
+  });
+}
+
+function renderUzupelnij(w, bio) {
+  const content = document.getElementById('uzupelnij-content');
+  const noYet = document.getElementById('no-uzupelnij-yet');
+  const list = document.getElementById('uzupelnij-list');
+
+  content.style.display = 'block';
+  noYet.style.display = 'none';
+  list.innerHTML = '';
+
+  const normaFe = getNormaZelaza();
+  const alergie = profil.alergie || [];
+  const karty = [];
+
+  // --- Baner suplementów ---
+  if (w.maSuplementy) {
+    const suppNames = Object.entries(suplementyDzis).map(([k, v]) => `${k} +${v}`).join(', ');
+    list.innerHTML += `<div class="card mb16" style="border-color:rgba(124,185,135,0.3); background:rgba(124,185,135,0.05);">
+      <div class="flex align-center gap8">
+        <span>💊</span>
+        <div>
+          <p style="font-size:14px; font-weight:600; color:var(--green);">Suplementy uwzględnione</p>
+          <p class="micro">${suppNames}</p>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  // --- Baner alergii ---
+  if (alergie.length > 0) {
+    const labels = alergie.map(a => {
+      const map = { orzechy:'orzechy', orzeszki:'orzeszki ziemne', gluten:'gluten', laktoza:'nabiał',
+        jajka:'jajka', soja:'soja', sezam:'sezam', cytrusy:'cytrusy', jagodowe:'jagodowe', kokos:'kokos', nasiona:'nasiona', straczki:'strączki' };
+      return map[a] || a;
+    }).join(', ');
+    list.innerHTML += `<div class="flex align-center gap8 mb16 flex-wrap">
+      <span class="allergy-badge">⚠️ Alergie</span>
+      <span class="micro">Pomijam w sugestiach: ${labels}</span>
+    </div>`;
+  }
+
+  // === ŻELAZO ===
+  const braknijeFe = normaFe - w.Fe;
+  if (braknijeFe > 1) {
+    // Propozycje konkretnych posiłków/przekąsek uzupełniających żelazo
+    const opcjePosilki = filterItems([
+      { nazwa: 'Miska soczewicy czerwonej z kurkumą', fe: 8.0, czas: '20 min', jak: 'Ugotuj 120g soczewicy, dopraw kurkumą i sokiem z cytryny — wit. C zwiększa wchłanianie 3×' },
+      { nazwa: 'Garść pestek dyni jako przekąska', fe: 2.6, czas: '0 min', jak: 'Zjedz 30g pestek dyni — idealna przekąska, nie wymaga gotowania' },
+      { nazwa: 'Tahini z warzywami (hummus domowy)', fe: 2.7, czas: '5 min', jak: '2 łyżki tahini (30g) z surową papryką — żelazo + wit. C z papryki = świetna kombinacja' },
+      { nazwa: 'Kasza gryczana z warzywami', fe: 2.2, czas: '15 min', jak: 'Porcja kaszy gryczanej (100g) z porem i natką pietruszki — naturalne wzmacniacze żelaza' },
+      { nazwa: 'Tofu stir-fry z papryką', fe: 8.1, czas: '15 min', jak: '150g tofu + papryka czerwona — kombinacja bogata w żelazo z naturalną wit. C' },
+      { nazwa: 'Morele suszone + pestki dyni', fe: 4.5, czas: '0 min', jak: '30g moreli suszonych + 15g pestek dyni — szybka słodka przekąska z żelazem' },
+    ], alergie);
+
+    const najlepsze = opcjePosilki.slice(0, 3);
+    const brakText = braknijeFe > 10
+      ? `Brakuje Ci jeszcze ~${braknijeFe.toFixed(1)} mg żelaza — to sporo. Postaraj się dziś uzupełnić kilka z tych propozycji.`
+      : `Brakuje Ci jeszcze ~${braknijeFe.toFixed(1)} mg żelaza — jedna z poniższych propozycji powinna wystarczyć.`;
+
+    if (najlepsze.length > 0) {
+      karty.push({
+        icon: '🩸', title: 'Uzupełnij żelazo dziś',
+        subtitle: brakText,
+        proposals: najlepsze,
+        tip: czyMaAlergen('cytryn', alergie)
+          ? '☕ Nie pij kawy ani herbaty przez godzinę od posiłku bogatego w żelazo'
+          : '🍋 Popij wodą z cytryną lub zjedz coś z wit. C — zwiększa wchłanianie 3×. Nie pij kawy przez godzinę.',
+      });
+    }
+  }
+
+  // === B12 ===
+  if (w.B12 < NORMY.B12 * 0.7) {
+    if (profil.dieta === 'weganin') {
+      karty.push({
+        icon: '🔬', title: 'Witamina B12 — niezbędna suplementacja',
+        subtitle: 'Dieta roślinna nie zawiera aktywnej B12. Bez suplementu nie ma innej opcji.',
+        proposals: [
+          { nazwa: 'Cyjanokobalamina lub metylokobalamina 100 µg/dzień', fe: null, czas: null, jak: 'Obie formy są skuteczne — cyjanokobalamina jest tańsza i lepiej przebadana, metylokobalamina to aktywna forma. Wybór należy do Ciebie.' },
+          { nazwa: 'Lub: 1000 µg 2× w tygodniu', fe: null, czas: null, jak: 'Wygodna alternatywa jeśli nie chcesz pamiętać o codziennej tabletce' },
+        ],
+        tip: '💡 Drożdże odżywcze wzbogacone B12 mogą podbić poziom, ale nie zastąpią suplementu — sprawdzaj etykietę czy mają B12',
+      });
+    } else {
+      const b12opcje = filterItems([
+        { nazwa: 'Jajecznica z 2 jajek', fe: null, czas: '5 min', jak: '2 jajka = ~1,7 µg B12 — prawie dzienna norma w jednym posiłku' },
+        { nazwa: 'Jogurt naturalny (150g)', fe: null, czas: '0 min', jak: '~0,6 µg B12 — szybka przekąska, połącz z owocami' },
+        { nazwa: 'Ser żółty (30g) na chleb', fe: null, czas: '2 min', jak: '~0,45 µg B12 — lekka kolacja bogata w B12 i wapń' },
+      ], alergie);
+      if (b12opcje.length > 0) {
+        karty.push({
+          icon: '🔬', title: 'Uzupełnij B12 dziś',
+          subtitle: `Twoje B12 dziś: ${w.B12.toFixed(1)} µg z potrzebnych ${NORMY.B12} µg`,
+          proposals: b12opcje,
+          tip: '💡 Jeśli rzadko jesz jajka i nabiał — rozważ suplementację cyjanokobalaminą lub metylokobalaminą',
+        });
+      }
+    }
+  }
+
+  // === WAPŃ ===
+  if (w.Ca < NORMY.wapn * 0.7) {
+    const caOpcje = filterItems([
+      { nazwa: 'Jarmuż gotowany na parze (80g)', fe: null, czas: '10 min', jak: '~200 mg Ca — gotowanie zwiększa biodostępność, skrop cytryną lub oliwą' },
+      { nazwa: 'Tofu twarde (150g)', fe: null, czas: '10 min', jak: '~300-450 mg Ca zależnie od rodzaju — sprawdź etykietę, tofu koagulowane chlorkiem wapnia ma go więcej' },
+      { nazwa: 'Garść migdałów (30g)', fe: null, czas: '0 min', jak: '~79 mg Ca — dobra przekąska po południu' },
+    ], alergie);
+    if (caOpcje.length > 0) {
+      karty.push({
+        icon: '🦴', title: 'Uzupełnij wapń dziś',
+        subtitle: `Twój wapń dziś: ${Math.round(w.Ca)} mg z potrzebnych ${NORMY.wapn} mg`,
+        proposals: caOpcje,
+        tip: '☀️ Wit. D3 zwiększa wchłanianie wapnia — zadbaj o suplement jeśli go nie masz',
+      });
+    }
+  }
+
+  // === OMEGA-3 ===
+  if (w.omega3 < getNormaOmega3() * 0.5) {
+    const o3opcje = filterItems([
+      { nazwa: 'Łyżka mielonego siemienia lnianego', fe: null, czas: '0 min', jak: '15g mielonego siemienia = ~3,4g ALA — posyp owsiankę, jogurt lub dodaj do smoothie. Koniecznie mielone, nie całe.' },
+      { nazwa: 'Łyżeczka oleju lnianego w sałatce', fe: null, czas: '0 min', jak: '5g oleju lnianego = ~2,7g ALA — tylko na zimno, nie do smażenia. Przechowuj w lodówce.' },
+      { nazwa: 'Kapsułki DHA z alg morskich (np. Doppelherz aktiv omega-3)', fe: null, czas: '0 min', jak: 'Suplement DHA z alg to najlepsza opcja dla wegan/wegetarian — dostarcza gotowe DHA z pominięciem słabej konwersji ALA→DHA (~5%)' },
+    ], alergie);
+    if (o3opcje.length > 0) {
+      karty.push({
+        icon: '🐟', title: 'Uzupełnij omega-3 dziś',
+        subtitle: `Twoje ALA dziś: ${w.omega3.toFixed(1)}g z potrzebnych ${getNormaOmega3()}g`,
+        proposals: o3opcje,
+        tip: '💡 Konwersja ALA do DHA to tylko ~5% — suplement DHA z alg morskich (jak Doppelherz aktiv) to najskuteczniejsze rozwiązanie',
+      });
+    }
+  }
+
+  // === CYNK ===
+  if (w.Zn < getNormaCynku() * 0.6) {
+    const znOpcje = filterItems([
+      { nazwa: 'Pestki dyni jako przekąska (30g)', fe: null, czas: '0 min', jak: '~2,3 mg Zn — posyp sałatkę lub zjedz same jako przekąska' },
+      { nazwa: 'Nerkowce (30g)', fe: null, czas: '0 min', jak: '~1,7 mg Zn — namoczone 2h mają lepszą biodostępność (mniej fitynianów)' },
+      { nazwa: 'Ciecierzyca (100g ugotowanej)', fe: null, czas: '0 min', jak: '~3,4 mg Zn — dodaj do sałatki lub zrób hummus' },
+    ], alergie);
+    if (znOpcje.length > 0) {
+      karty.push({
+        icon: '🌿', title: 'Uzupełnij cynk dziś',
+        subtitle: `Twój cynk dziś: ${w.Zn.toFixed(1)} mg z potrzebnych ${getNormaCynku()} mg`,
+        proposals: znOpcje,
+        tip: '💡 Namaczaj orzechy i strączki przez noc — rozkładasz fityniany blokujące wchłanianie cynku',
+      });
+    }
+  }
+
+  // === WIT D — zawsze jeśli nie suplementuje ===
+  const witDDzis = suplementyDzis.witD || 0;
+  if (witDDzis < NORMY.witD * 0.8) {
+    karty.push({
+      icon: '☀️', title: 'Witamina D — suplementacja',
+      subtitle: witDDzis > 0
+        ? `Dziś wzięłaś/eś ${witDDzis} IU. Zalecana dawka to 800–2000 IU/dzień.`
+        : 'W Polsce słońce nie wystarczy przez większość roku. Suplementacja jest konieczna.',
+      proposals: [
+        { nazwa: 'D3 800–2000 IU/dzień z jedzeniem', fe: null, czas: '0 min', jak: profil.dieta === 'weganin' ? 'Wegańska D3 z porostów (lichen) — skuteczna alternatywa dla D3 ze lanoliny' : 'Najlepiej wziąć z tłustym posiłkiem — witamina D jest rozpuszczalna w tłuszczach' },
+      ],
+      tip: '📋 Badanie 25-OH-D (witamina D we krwi) raz w roku pomoże dobrać Ci właściwą dawkę',
+    });
+  }
+
+  // === BIAŁKO ===
+  if (w.proteina < NORMY.proteina * 0.6) {
+    const protOpcje = filterItems([
+      { nazwa: 'Szklanka ugotowanej soczewicy (120g)', fe: null, czas: '20 min', jak: '~30g białka — soczewica to też świetne źródło żelaza i folianów' },
+      { nazwa: 'Blok tofu (150g) z warzywami', fe: null, czas: '10 min', jak: '~25g białka — pełnowartościowe białko sojowe zawiera wszystkie aminokwasy egzogenne' },
+      { nazwa: 'Jogurt grecki + garść orzechów', fe: null, czas: '0 min', jak: '~20g białka — szybka przekąska bogata w białko i wapń' },
+    ], alergie);
+    if (protOpcje.length > 0) {
+      karty.push({
+        icon: '💪', title: 'Uzupełnij białko dziś',
+        subtitle: `Twoje białko dziś: ${Math.round(w.proteina)}g z potrzebnych ~${NORMY.proteina}g`,
+        proposals: protOpcje,
+        tip: '💡 Łącz różne źródła białka roślinnego — strączki + zboża = pełny profil aminokwasowy',
+      });
+    }
+  }
+
+  if (karty.length === 0) {
+    list.innerHTML += `<div class="card" style="text-align:center; padding:40px 24px;">
+      <p style="font-size:40px; margin-bottom:16px;">🎉</p>
+      <p style="font-weight:600; font-size:17px; margin-bottom:8px;">Dziś wygląda naprawdę dobrze!</p>
+      <p class="micro" style="max-width:260px; margin:0 auto;">Nie widzę żadnych poważnych braków na ten moment. Tak trzymaj!</p>
+    </div>`;
+    return;
+  }
+
+  karty.forEach((k, idx) => {
+    const card = document.createElement('div');
+    card.className = 'reco-card fade-up';
+    card.style.animationDelay = `${idx * 0.06}s`;
+
+    const proposalsHtml = k.proposals.map(p => `
+      <div style="padding:12px 0; border-bottom:1px solid var(--sep);">
+        <div class="flex align-center gap8 mb4">
+          <span style="font-size:14px; font-weight:600;">${p.nazwa}</span>
+          ${p.czas !== null ? `<span class="micro" style="margin-left:auto; flex-shrink:0;">${p.czas ? '⏱ '+p.czas : ''}</span>` : ''}
+        </div>
+        <p style="font-size:13px; color:var(--text2); line-height:1.55;">${p.jak}</p>
+      </div>
+    `).join('');
+
+    card.innerHTML = `
+      <div class="reco-header mb8">
+        <span style="font-size:22px;">${k.icon}</span>
+        <div>
+          <div style="font-weight:600; font-size:16px;">${k.title}</div>
+          <p class="micro mt4">${k.subtitle}</p>
+        </div>
+      </div>
+      <div style="margin:0 -4px;">${proposalsHtml}</div>
+      <div class="reco-tip mt12">${k.tip}</div>
+    `;
+    list.appendChild(card);
+  });
+}
+
+/* ============================================
+   PROFIL — wyświetlanie i edycja
+============================================ */
+function renderProfil() {
+  const card = document.getElementById('profil-card');
+  if (!card) return;
+
+  const dietaLabels = { wegetarianin: 'Wegetarianka/in', weganin: 'Weganka/in', fleksi: 'Fleksitarianka/in' };
+  const plecLabels = { kobieta: 'Kobieta', mezczyzna: 'Mężczyzna', inne: 'Wolę nie podawać' };
+
+  card.innerHTML = `
+    <div class="eyebrow mb12">Twoje dane</div>
+    <div style="display:flex; flex-direction:column; gap:12px;">
+      <div class="flex align-center gap8">
+        <span style="color:var(--text2); font-size:13px; min-width:120px;">Płeć biologiczna</span>
+        <span style="font-size:14px; font-weight:500;">${plecLabels[profil.plec] || profil.plec}</span>
+      </div>
+      ${profil.plec === 'kobieta' ? `<div class="flex align-center gap8">
+        <span style="color:var(--text2); font-size:13px; min-width:120px;">Miesiączka</span>
+        <span style="font-size:14px; font-weight:500;">${profil.miesiaczka === 'tak' ? 'Tak, regularnie' : 'Nie / po menopauzie'}</span>
+      </div>` : ''}
+      <div class="flex align-center gap8">
+        <span style="color:var(--text2); font-size:13px; min-width:120px;">Typ diety</span>
+        <span style="font-size:14px; font-weight:500;">${dietaLabels[profil.dieta] || profil.dieta}</span>
+      </div>
+      <div class="flex align-center gap8">
+        <span style="color:var(--text2); font-size:13px; min-width:120px;">Norma żelaza</span>
+        <span style="font-size:14px; font-weight:500;">${getNormaZelaza()} mg/dzień</span>
+      </div>
+    </div>
+    <div class="mt16 pt16" style="border-top:1px solid var(--sep);">
+      <button class="btn btn-ghost" style="font-size:13px;" onclick="sessionStorage.removeItem('skl_profil'); location.reload();">Zmień profil (przejdź przez onboarding)</button>
+    </div>
+  `;
+
+  // Alergie
+  const alergieEl = document.getElementById('profil-alergie');
+  if (!alergieEl) return;
+  const alergie = profil.alergie || [];
+
+  if (alergie.length === 0) {
+    alergieEl.innerHTML = `<p class="micro">Brak zarejestrowanych alergii.</p>`;
+  } else {
+    const allergyNames = { orzechy:'🥜 Orzechy', orzeszki:'🥜 Orzeszki ziemne', gluten:'🌾 Gluten', laktoza:'🥛 Nabiał',
+      jajka:'🥚 Jajka', soja:'🫘 Soja', sezam:'🌰 Sezam', cytrusy:'🍋 Cytrusy', jagodowe:'🍓 Owoce jagodowe',
+      kokos:'🥥 Kokos', nasiona:'🌱 Nasiona', straczki:'🫛 Strączki' };
+    alergieEl.innerHTML = `<div class="flex flex-wrap gap8">${
+      alergie.map(a => `<span class="allergy-badge">⚠️ ${allergyNames[a] || a}</span>`).join('')
+    }</div>`;
+  }
+}
+
+function editAllergies() {
+  const modal = document.getElementById('allergy-modal');
+  const grid = document.getElementById('allergy-modal-grid');
+
+  const OPCJE = [
+    { val:'orzechy', icon:'🥜', label:'Orzechy', sub:'migdały, nerkowce, włoskie' },
+    { val:'orzeszki', icon:'🥜', label:'Orzeszki ziemne', sub:'' },
+    { val:'gluten', icon:'🌾', label:'Gluten / pszenica', sub:'' },
+    { val:'laktoza', icon:'🥛', label:'Laktoza / nabiał', sub:'' },
+    { val:'jajka', icon:'🥚', label:'Jajka', sub:'' },
+    { val:'soja', icon:'🫘', label:'Soja i przetwory', sub:'' },
+    { val:'sezam', icon:'🌰', label:'Sezam / tahini', sub:'' },
+    { val:'cytrusy', icon:'🍋', label:'Cytrusy', sub:'cytryna, pomarańcza' },
+    { val:'jagodowe', icon:'🍓', label:'Owoce jagodowe', sub:'truskawki, maliny' },
+    { val:'kokos', icon:'🥥', label:'Kokos', sub:'' },
+    { val:'nasiona', icon:'🌱', label:'Nasiona', sub:'chia, siemię lniane' },
+    { val:'straczki', icon:'🫛', label:'Strączki', sub:'fasola, soczewica' },
+  ];
+
+  const aktywne = profil.alergie || [];
+
+  grid.innerHTML = OPCJE.map(o => `
+    <label class="allergy-check ${aktywne.includes(o.val) ? 'checked' : ''}">
+      <input type="checkbox" value="${o.val}" ${aktywne.includes(o.val) ? 'checked' : ''}
+        onchange="this.closest('.allergy-check').classList.toggle('checked', this.checked)">
+      <span class="allergy-icon">${o.icon}</span>
+      <span>${o.label}${o.sub ? `<br><span style="color:var(--text2);font-size:11px;">${o.sub}</span>` : ''}</span>
+    </label>
+  `).join('');
+
+  document.getElementById('allergy-modal-custom-list').innerHTML = '';
+  document.getElementById('allergy-modal-custom').value = '';
+
+  modal.style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAllergyModal() {
+  document.getElementById('allergy-modal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function addModalCustomAllergy() {
+  const input = document.getElementById('allergy-modal-custom');
+  const val = input.value.trim();
+  if (!val) return;
+  const container = document.getElementById('allergy-modal-custom-list');
+  const pill = document.createElement('div');
+  pill.className = 'pill';
+  pill.style.borderColor = 'rgba(196,97,74,0.4)';
+  pill.style.color = 'var(--red)';
+  pill.dataset.val = val.toLowerCase();
+  pill.innerHTML = `⚠️ ${val} <button class="pill-remove" onclick="this.parentElement.remove()" style="color:var(--red)">×</button>`;
+  container.appendChild(pill);
+  input.value = '';
+}
+
+function saveAllergyEdits() {
+  const checkboxes = document.querySelectorAll('#allergy-modal-grid input[type="checkbox"]:checked');
+  const fromGrid = Array.from(checkboxes).map(cb => cb.value);
+  const fromCustom = Array.from(document.querySelectorAll('#allergy-modal-custom-list [data-val]')).map(el => el.dataset.val);
+  profil.alergie = [...new Set([...fromGrid, ...fromCustom])];
+  sessionStorage.setItem('skl_profil', JSON.stringify(profil));
+  closeAllergyModal();
+  renderProfil();
+  if (wyniki) renderUzupelnij(wyniki);
+}
+
+function resetApp() {
+  document.getElementById('reset-modal').style.display = 'flex';
+}
+
+function confirmReset() {
+  sessionStorage.clear();
+  location.reload();
+}
+
+function cancelReset() {
+  document.getElementById('reset-modal').style.display = 'none';
+}
+
+</script>
+
+</body>
+</html>
